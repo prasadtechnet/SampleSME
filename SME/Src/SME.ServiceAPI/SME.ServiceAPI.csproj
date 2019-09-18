@@ -24,8 +24,7 @@
     <Folder Include="Business\Feature\Pdf\" />
     <Folder Include="Business\Logging\" />
     <Folder Include="Business\Manager\" />
-    <Folder Include="Business\BusinessFlow\" />
-    <Folder Include="Business\Validations\" />
+    <Folder Include="Common\Logging\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

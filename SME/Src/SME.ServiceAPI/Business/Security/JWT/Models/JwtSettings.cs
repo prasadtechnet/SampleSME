@@ -9,5 +9,17 @@ namespace SME.ServiceAPI.Business.Security.JWT.Models
     {
         public string Secret { get; set; }
         public TimeSpan TokenLifetime { get; set; }
+
+        public string issuer { get; set; }
+
+        public int expiryDays { get; set; }
+
+        public bool useRsa { get; set; }
+
+        public string hmacSecretKey { get; set; }
+
+        public string rsaPrivateKeyXml { get; set; }
+
+        public string rsaPublicKeyXml { get; set; }
     }
 }

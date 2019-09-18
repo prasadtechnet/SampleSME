@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace SME.ServiceAPI.Business.Mapper
     {
         public MappingProfile()
         {
-
+            CreateMap<Product, ProductModel>();            
         }
 
 
