@@ -7,6 +7,6 @@ namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
 {
     public class ApplicationUser:BaseEntity
     {
-
+       
     }
 }
