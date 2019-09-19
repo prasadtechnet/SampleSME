@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
 {
-    public class ProductModel : BaseEntity
+    public class CustomerProduct : BaseEntity
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
     }
 }

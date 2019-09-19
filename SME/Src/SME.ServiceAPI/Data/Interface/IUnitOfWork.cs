@@ -14,5 +14,7 @@ namespace SME.ServiceAPI.Data.Interface
         void CommitTransaction();
 
         void SaveChanges();
+
+        Task SaveChangesAsync();
     }
 }

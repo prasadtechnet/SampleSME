@@ -8,6 +8,8 @@ namespace SME.ServiceAPI.Common.Idenitity
 {
     public class ClaimMaster:BaseEntity
     {
-
+        public int Id { get; set; }
+        public string Category { get; set; }
+        public string ClaimValue { get; set; }
     }
 }

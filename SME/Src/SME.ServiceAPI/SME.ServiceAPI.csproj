@@ -20,10 +20,8 @@
   <ItemGroup>
     <Folder Include="Business\Contracts\Response\" />
     <Folder Include="Business\Contracts\Request\" />
-    <Folder Include="Business\Feature\Email\" />
     <Folder Include="Business\Feature\Pdf\" />
     <Folder Include="Business\Logging\" />
-    <Folder Include="Business\Manager\" />
     <Folder Include="Common\Logging\" />
     <Folder Include="Controllers\" />
   </ItemGroup>

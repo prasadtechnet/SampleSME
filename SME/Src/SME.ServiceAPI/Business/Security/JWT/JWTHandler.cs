@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using JwtRsaAPI.JWT.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SME.ServiceAPI.Business.Security.JWT.Models;
 
-namespace SME.ServiceAPI.Business.JWT
+namespace JwtRsaAPI.JWT
 {
     public interface IJWTHandler
     {
@@ -88,6 +90,40 @@ namespace SME.ServiceAPI.Business.JWT
 
         #endregion
 
+        public async Task<JwtResponse> GenerateToken(IdentityUser user)
+        {
+            var jwtTokenHndlr = new JwtSecurityTokenHandler();
+
+            var secretKey = System.Text.Encoding.ASCII.GetBytes(_settings.Secret);
+            //Default Claims
+            var lsClaims = new List<Claim>{
+                                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                                    };
+
+            
+
+            //Permission Cliams need to add
+            //if (String.IsNullOrEmpty(lsPermissions))
+            //    lsClaims.Add(new Claim(type: "permission", value: lsPermissions));
+
+            var tokenDesc = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(lsClaims.ToArray()),
+                Expires = DateTime.UtcNow.Add(_settings.TokenLifetime),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)
+            };
+
+            var token = jwtTokenHndlr.CreateToken(tokenDesc);
+
+            return new JwtResponse
+            {
+                Success = true,
+                Token = jwtTokenHndlr.WriteToken(token)
+            };
+        }
+
 
         public JWTTokenModel Create(string userId)
         {
@@ -98,7 +134,7 @@ namespace SME.ServiceAPI.Business.JWT
             var now = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
             var issuer = _settings.issuer ?? string.Empty;
             var payload = new JwtPayload
-            { 
+            {
                 {"sub",userId },
                 {"unique_name",userId },
                 {"iss",issuer },

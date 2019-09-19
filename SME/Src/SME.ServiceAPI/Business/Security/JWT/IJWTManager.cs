@@ -8,6 +8,10 @@ namespace SME.ServiceAPI.Business.Security.JWT
 {
     public interface IJWTManager
     {
-        JwtResponse GenerateToken(string userrId, string userRole, string lsPermissions = "");
+        Task<JwtResponse> GenerateToken(string userrId, string userRole, string lsPermissions = "");
+
+        Task<JwtResponse> GenerateRefreshToken(string Token, string RefreshToken);
+        
+        
     }
 }

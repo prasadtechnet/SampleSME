@@ -36,5 +36,11 @@ namespace SME.ServiceAPI.Data.Core
         {
            // _dbFactory.GetDataContext.Save();
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbFactory.GetDataContext.SaveAsync();
+            // _dbFactory.GetDataContext.Save();
+        }
     }
 }
