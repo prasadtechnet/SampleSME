@@ -11,7 +11,13 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         Task GetHistoryOfCall(string ServiceCallId);
         Task GetFeedbackOfCall(string ServiceCallId);
         Task GetProductsOfCall(string ServiceCallId);
-        Task CreateServiceCallFeedback();     
+        Task CreateServiceCallFeedback();
+        Task AssignServiceCall();
+        Task AcceptServiceCall();
+        Task NotAcceptServiceCall();
+        Task NotResolvedServiceCall();
+        Task ResolvedServiceCall();
+        Task CloseServiceCall();
 
     }
 }

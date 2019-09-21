@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using SME.ServiceAPI.Business.BusinessFlow;
+using SME.ServiceAPI.Business.BusinessFlow.Core;
 using SME.ServiceAPI.Business.Contracts;
 using SME.ServiceAPI.Data.Interface;
 
@@ -14,14 +16,15 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         private readonly IRepository _repository;
         private readonly IUnitOfWork _unitofWork;
         private ILogger<ServiceCallManager> _logger;
+       // private IWorkFlowManager _scFlowManager;
         #endregion
-
+             
         #region Constructor
-        public ServiceCallManager(IRepository repository, IUnitOfWork unitofWork, ILogger<ServiceCallManager> logger)
+        public ServiceCallManager(IRepository repository, IUnitOfWork unitofWork,  ILogger<ServiceCallManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
-            _logger = logger;
+            _logger = logger;           
         }
 
 
@@ -66,14 +69,39 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
             throw new NotImplementedException();
         }
 
-      
-
-     
-
         public Task Update(BaseEntity entity)
         {
             throw new NotImplementedException();
         }
 
+        public Task AssignServiceCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AcceptServiceCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task NotAcceptServiceCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task NotResolvedServiceCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ResolvedServiceCall()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CloseServiceCall()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

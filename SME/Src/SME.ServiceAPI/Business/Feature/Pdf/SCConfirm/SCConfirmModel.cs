@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SME.ServiceAPI.Business.Feature.Email
+namespace SME.ServiceAPI.Business.Feature.Pdf.SCConfirm
 {
-    public interface IEmailService
+    public class SCConfirmModel
     {
 
     }

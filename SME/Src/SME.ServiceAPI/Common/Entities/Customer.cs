@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Entities
 {
-    public class Customer:BaseEntity
+    public class Customer
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -16,6 +16,7 @@ namespace SME.ServiceAPI.Common.Entities
         public string Mobile { get; set; }
         public string LogonName { get; set; }
 
-        
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

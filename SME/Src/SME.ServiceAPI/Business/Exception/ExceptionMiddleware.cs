@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -60,11 +61,21 @@ namespace SME.ServiceAPI.Business.Exception
                 message = "Unauthorized Access";
                 statusCode = HttpStatusCode.InternalServerError;
             }
+            httpContext.Response.StatusCode =(int)statusCode;
+            //return httpContext.Response.WriteAsync((new ErrorDetails
+            //{               
+            //    Errors = new[] { message }
+            //}).ToString());
 
-                return httpContext.Response.WriteAsync((new ErrorDetails
-            {
+            return httpContext.Response.WriteAsync( message);
+        }
+    }
 
-            }).ToString());
+    public static class ExceptionMiddlewareExtensions
+    {
+        public static IApplicationBuilder UseMyException(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ExceptionMiddleware>();
         }
     }
 

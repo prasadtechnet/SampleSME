@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Entities
 {
-    public class ServiceCallFeedback : BaseEntity
+    public class ServiceCallFeedback 
     {
         public int Id { get; set; }
         public string ServiceCallId { get; set; }
         public int  Rating { get; set; }
         public string Remarks { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

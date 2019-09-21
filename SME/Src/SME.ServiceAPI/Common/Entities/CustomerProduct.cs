@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Entities
 {
-    public class CustomerProduct:BaseEntity
+    public class CustomerProduct
     {
         public int Id { get; set; }
         public string CustomerId { get; set; }
@@ -16,5 +16,8 @@ namespace SME.ServiceAPI.Common.Entities
         public DateTime? PurchaseDate { get; set; }
         public decimal? Price { get; set; }
         public DateTime? Warrenty { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

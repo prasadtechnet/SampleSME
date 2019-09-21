@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Entities
 {
-    public class ServiceCall:BaseEntity
+    public class ServiceCall
     {
         public string Id { get; set; }
         public string CustomerId { get; set; }
@@ -15,6 +15,7 @@ namespace SME.ServiceAPI.Common.Entities
         public int BranchId { get; set; }
         public string Status { get; set; }
         public bool IsUnderWarrenty { get; set; }
-
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

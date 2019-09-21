@@ -19,6 +19,7 @@ namespace JwtRsaAPI.JWT
     {
         JWTTokenModel Create(string userId);
         TokenValidationParameters Parameters { get; }
+        Task<JwtResponse> GenerateToken1(string user);
     }
     public class JWTHandler : IJWTHandler
     {
@@ -33,9 +34,9 @@ namespace JwtRsaAPI.JWT
         #endregion
 
         #region Constructor
-        public JWTHandler(IOptions<JwtSettings> settings)
+        public JWTHandler(JwtSettings settings)
         {
-            _settings = settings.Value;
+            _settings = settings;
 
             if (_settings.useRsa)
             {
@@ -90,6 +91,39 @@ namespace JwtRsaAPI.JWT
 
         #endregion
 
+        public async Task<JwtResponse> GenerateToken1(string user)
+        {
+            var jwtTokenHndlr = new JwtSecurityTokenHandler();
+
+            var secretKey = System.Text.Encoding.ASCII.GetBytes(_settings.Secret);
+            //Default Claims
+            var lsClaims = new List<Claim>{
+                                    new Claim(JwtRegisteredClaimNames.Sub, user),
+                                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                                    new Claim(JwtRegisteredClaimNames.Email, user)
+                                    };
+
+
+            var lsPermissions = "1,2,3";
+            //Permission Cliams need to add
+            if (!String.IsNullOrEmpty(lsPermissions))
+                lsClaims.Add(new Claim(type: "permission", value: lsPermissions));
+
+            var tokenDesc = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(lsClaims.ToArray()),
+                Expires = DateTime.UtcNow.Add(_settings.TokenLifetime),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)
+            };
+
+            var token = jwtTokenHndlr.CreateToken(tokenDesc);
+
+            return new JwtResponse
+            {
+                Success = true,
+                Token = jwtTokenHndlr.WriteToken(token)
+            };
+        }
         public async Task<JwtResponse> GenerateToken(IdentityUser user)
         {
             var jwtTokenHndlr = new JwtSecurityTokenHandler();

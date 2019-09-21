@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Entities
 {
-    public class ServiceCallHistory : BaseEntity
+    public class ServiceCallHistory 
     {
         public int Id { get; set; }
         public string ServiceCallId { get; set; }
         public string ActivityName { get; set; }
         public string Description { get; set; }
-
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

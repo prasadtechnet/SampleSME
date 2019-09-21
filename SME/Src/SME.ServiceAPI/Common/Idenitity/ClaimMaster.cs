@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Idenitity
 {
-    public class ClaimMaster:BaseEntity
+    public class ClaimMaster
     {
         public int Id { get; set; }
         public string Category { get; set; }
