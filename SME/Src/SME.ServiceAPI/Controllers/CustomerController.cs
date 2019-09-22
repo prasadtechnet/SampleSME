@@ -29,7 +29,7 @@ namespace SME.ServiceAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAll()
         {
-            var IsValidClaim = HttpContext.ValidatePermission("6");
+            var IsValidClaim = HttpContext.ValidatePermission("2");
             if (!IsValidClaim)
                 return Unauthorized("you don't have permission");
 

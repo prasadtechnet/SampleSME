@@ -1,0 +1,25 @@
+﻿@model SME.Client.Models.Auth.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <div>
+        <form id="frmLogin" asp-controller="Auth" asp-action="Login" method="post">
+            <label>User Email</label><br />
+            <input type="text" asp-for="@Model.email" /><br />
+            <label>password</label><br />
+            <input type="password" asp-for="@Model.password" /><br />
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+</body>
+</html>

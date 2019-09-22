@@ -55,7 +55,9 @@ namespace SME.ServiceAPI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-         //  app.UseMyException();
+            //  app.UseMyException();
+
+      
 
             app.UseSwagger();
             app.UseSwaggerUI(x => {
