@@ -36,6 +36,7 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         }
         public Task Create(BaseEntity entity)
         {
+
             throw new NotImplementedException();
         }
 

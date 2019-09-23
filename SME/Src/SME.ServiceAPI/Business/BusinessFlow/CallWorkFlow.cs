@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.BusinessFlow.Core;
 using SME.ServiceAPI.Business.Feature;
 using SME.ServiceAPI.Business.Manager.ServiceCall;
 using SME.ServiceAPI.Common.Entities;
+using SME.ServiceAPI.Common.Idenitity;
 using SME.ServiceAPI.Data.Interface;
 using System;
 using System.Collections.Generic;
@@ -16,18 +18,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
         //histroy,Features activities based on status
         IWorkflowHandler _hdlerStatus;
         private Dictionary<string, IWorkflowHandler> objDict;
-        public CallWorkFlow(ServiceCall objCall,IRepository repository,IUnitOfWork unitOfWork,IFeatureModule featureModule, ILogger<ServiceCallManager> logger)
-        {
-          
-            objDict = new Dictionary<string, IWorkflowHandler>
+        public CallWorkFlow(ServiceCall objCall,IRepository repository,IUnitOfWork unitOfWork,IFeatureModule featureModule,IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
+        {            
+              objDict = new Dictionary<string, IWorkflowHandler>
             {
-                {"OPEN",new OpenHandler(objCall,repository,unitOfWork,featureModule,logger)},
-                {"ASSIGNED",new AssignedHandler(objCall,repository,unitOfWork,featureModule,logger)},
-                {"ACCEPTED",new AcceptedHandler(objCall,repository,unitOfWork,logger)},
-                {"NOTACCEPTED",new NotAcceptedHandler(objCall,repository,unitOfWork,logger)},
-                {"RESOLVED",new ResolvedHandler(objCall,repository,unitOfWork,logger)},
-                {"NOTRESOLVED",new NotResolvedHandler(objCall,repository,unitOfWork,featureModule,logger)},
-                {"CLOSED",new CloseHandler(objCall,repository,unitOfWork,featureModule,logger)}
+                {"OPEN",new OpenHandler(objCall,repository,unitOfWork,featureModule,userStore,loginUser,logger)},
+                {"ASSIGNED",new AssignedHandler(objCall,repository,unitOfWork,featureModule,userStore,loginUser,logger)},
+                {"ACCEPTED",new AcceptedHandler(objCall,repository,unitOfWork,userStore,loginUser,logger)},
+                {"NOTACCEPTED",new NotAcceptedHandler(objCall,repository,unitOfWork,userStore,loginUser,logger)},
+                {"RESOLVED",new ResolvedHandler(objCall,repository,unitOfWork,userStore,loginUser,logger)},
+                {"NOTRESOLVED",new NotResolvedHandler(objCall,repository,unitOfWork,featureModule,userStore,loginUser,logger)},
+                {"CLOSED",new CloseHandler(objCall,repository,unitOfWork,featureModule,userStore,loginUser,logger)}
             };
             _hdlerStatus = objDict[objCall.Status.ToUpper()];
         }
@@ -44,7 +45,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IUnitOfWork _unitOfWork;
             private IFeatureModule _featureModule;
             private ILogger<ServiceCallManager> _logger;
-            public OpenHandler(ServiceCall objCall,IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, ILogger<ServiceCallManager> logger)
+            public OpenHandler(ServiceCall objCall,IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -56,10 +57,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
           
 
             public  void Handle()
-            {
-                
+            {   //create call
+                //create history
+                //send email to customer
+                try
+                {
 
-                throw new NotImplementedException();
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -73,7 +81,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IUnitOfWork _unitOfWork;
             private IFeatureModule _featureModule;
             private ILogger<ServiceCallManager> _logger;
-            public AssignedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule,ILogger<ServiceCallManager> logger)
+            public AssignedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -83,7 +91,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public  void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history
+                //send email to tech
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -96,7 +114,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IRepository _repository;
             private IUnitOfWork _unitOfWork;
             private ILogger<ServiceCallManager> _logger;
-            public AcceptedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, ILogger<ServiceCallManager> logger)
+            public AcceptedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -105,7 +123,16 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history               
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -118,7 +145,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IRepository _repository;
             private IUnitOfWork _unitOfWork;
             private ILogger<ServiceCallManager> _logger;
-            public NotAcceptedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, ILogger<ServiceCallManager> logger)
+            public NotAcceptedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -127,7 +154,16 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history               
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -141,7 +177,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IRepository _repository;
             private IUnitOfWork _unitOfWork;
             private ILogger<ServiceCallManager> _logger;
-            public ResolvedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, ILogger<ServiceCallManager> logger)
+            public ResolvedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -150,7 +186,16 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public  void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history               
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -165,7 +210,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IUnitOfWork _unitOfWork;
             private IFeatureModule _featureModule;
             private ILogger<ServiceCallManager> _logger;
-            public NotResolvedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, ILogger<ServiceCallManager> logger)
+            public NotResolvedHandler(ServiceCall objCall, IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -175,7 +220,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history     
+                //send email to manager
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {
@@ -190,7 +245,7 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             private IUnitOfWork _unitOfWork;
             private IFeatureModule _featureModule;
             private ILogger<ServiceCallManager> _logger;
-            public CloseHandler(ServiceCall objCall,IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, ILogger<ServiceCallManager> logger)
+            public CloseHandler(ServiceCall objCall,IRepository repository, IUnitOfWork unitOfWork, IFeatureModule featureModule, IUserStore<AppUser> userStore, AppUser loginUser, ILogger<ServiceCallManager> logger)
             {
                 _call = objCall;
                 _repository = repository;
@@ -200,7 +255,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             }
             public  void Handle()
             {
-                throw new NotImplementedException();
+                //update call
+                //create history       
+                //send mail to cutomer regarding close and ask for feedback link
+                try
+                {
+
+                }
+                catch (System.Exception ex)
+                {
+
+                }
             }
             public void Dispose()
             {

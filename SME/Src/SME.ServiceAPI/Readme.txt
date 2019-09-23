@@ -1,4 +1,12 @@
-﻿
+﻿Features
+
+1. Single Login
+2.Two-factor authentication testing
+3.Unit testing
+4.Performance testing
+5.Feature Module configuration runtime
+6.
+
 Call Management
 
 1.Call created by customer (created call details pdf email to customer)

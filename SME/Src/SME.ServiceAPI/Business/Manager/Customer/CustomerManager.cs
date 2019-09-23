@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.Contracts;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 using SME.ServiceAPI.Business.Manager.ServiceCall;
 using SME.ServiceAPI.Data.Interface;
+using SME.ServiceAPI.Common.Entities;
+using AutoMapper;
 
 namespace SME.ServiceAPI.Business.Manager.Customer
 {
@@ -16,10 +19,11 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         private readonly IUnitOfWork _unitofWork;
         private ILogger<CustomerManager> _logger;
         private IServiceCallManager _serviceCallManager;
+        private IMapper _mapper;
         #endregion
 
         #region Constructor
-        public CustomerManager( IServiceCallManager serviceCallManager, IRepository repository,IUnitOfWork unitofWork,ILogger<CustomerManager> logger)
+        public CustomerManager( IServiceCallManager serviceCallManager, IRepository repository,IUnitOfWork unitofWork,IMapper mapper,ILogger<CustomerManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
@@ -33,9 +37,13 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         {
             await _unitofWork.SaveChangesAsync();
         }
-        public Task Create(BaseEntity entity)
+        public async Task Create(BaseEntity entity)
         {
-            throw new NotImplementedException();
+            var customerEntity = _mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(entity as CustomerModel);
+            
+            _repository.Create<SME.ServiceAPI.Common.Entities.Customer>(customerEntity);
+            await _unitofWork.SaveChangesAsync();
+          
         }
 
         public Task CreateServiceCall()

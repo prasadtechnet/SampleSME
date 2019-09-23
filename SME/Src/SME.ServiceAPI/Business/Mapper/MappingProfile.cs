@@ -12,7 +12,8 @@ namespace SME.ServiceAPI.Business.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductModel>();            
+            CreateMap<Product, ProductModel>();
+            CreateMap<Customer, CustomerModel>().ReverseMap();
         }
 
 
