@@ -39,7 +39,7 @@ namespace SME.ServiceAPI.Data.Core
 
         public async Task SaveChangesAsync()
         {
-            await _dbFactory.GetDataContext.SaveAsync();
+            await _dbFactory.GetDataContext.SaveChangesAsync();
             // _dbFactory.GetDataContext.Save();
         }
     }

@@ -7,5 +7,7 @@ namespace SME.ServiceAPI.Business.Manager.Core
 {
     public abstract class BusinessManager
     {
+
+      
     }
 }

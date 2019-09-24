@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SME.ServiceAPI.Common.Entities;
+using SME.ServiceAPI.Common.Idenitity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,31 +14,35 @@ namespace SME.ServiceAPI.Data.Context
         {
 
         }
-        private void CustomerMap(EntityTypeBuilder<Branch> builder)
+        private void CustomerMap(EntityTypeBuilder<Customer> builder)
         {
 
         }
-        private void CustomerProductMap(EntityTypeBuilder<Branch> builder)
+        private void CustomerProductMap(EntityTypeBuilder<CustomerProduct> builder)
         {
 
         }
-        private void ProductMap(EntityTypeBuilder<Branch> builder)
+        private void ProductMap(EntityTypeBuilder<Product> builder)
         {
 
         }
-        private void ServiceCallMap(EntityTypeBuilder<Branch> builder)
+        private void ServiceCallMap(EntityTypeBuilder<ServiceCall> builder)
         {
 
         }
-        private void ServiceCallFeedbackMap(EntityTypeBuilder<Branch> builder)
+        private void ServiceCallProductMap(EntityTypeBuilder<ServiceCallProduct> builder)
         {
 
         }
-        private void ServiceCallHistoryMap(EntityTypeBuilder<Branch> builder)
+        private void ServiceCallFeedbackMap(EntityTypeBuilder<ServiceCallFeedback> builder)
         {
 
         }
-        private void ClaimMasterMap(EntityTypeBuilder<Branch> builder)
+        private void ServiceCallHistoryMap(EntityTypeBuilder<ServiceCallHistory> builder)
+        {
+
+        }
+        private void ClaimMasterMap(EntityTypeBuilder<ClaimMaster> builder)
         {
 
         }

@@ -17,6 +17,10 @@ namespace SME.ServiceAPI.Common.Entities
         public string LogonName { get; set; }
 
         public DateTime? CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
+        public string ModifieidBy { get; set; }
+
+        public virtual ICollection<CustomerProduct> Products { get; set; }
     }
 }

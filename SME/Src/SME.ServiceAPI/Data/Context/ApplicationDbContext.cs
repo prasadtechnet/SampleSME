@@ -24,27 +24,38 @@ namespace SME.ServiceAPI.Data.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Branch>(BranchMap);
-            builder.Entity<Branch>(CustomerMap);
-         
+            //builder.Entity<Branch>(BranchMap);
+            //builder.Entity<Customer>(CustomerMap);
+            //builder.Entity<CustomerProduct>(CustomerProductMap);
+            //builder.Entity<Product>(ProductMap);
+            //builder.Entity<ServiceCall>(ServiceCallMap);
+            //builder.Entity<ServiceCallProduct>(ServiceCallProductMap);
+            //builder.Entity<ServiceCallFeedback>(ServiceCallFeedbackMap);
+            //builder.Entity<ServiceCallHistory>(ServiceCallHistoryMap);
+            //builder.Entity<ClaimMaster>(ClaimMasterMap);
 
             base.OnModelCreating(builder);
         }
 
+        
+        #region DbSets
 
-      
-        public async Task SaveAsync()
-        {
-           await base.SaveChangesAsync();
-        }
-
-
+        DbSet<Branch> Branches { get; set; }
+        DbSet<Customer> Customers { get; set; }
+        DbSet<CustomerProduct> CustomerProducts { get; set; }
+        DbSet<Product> Products { get; set; }
+        DbSet<ServiceCall> ServiceCalls { get; set; }
+        DbSet<ServiceCallProduct> ServiceCallProducts { get; set; }
+        DbSet<ServiceCallHistory> ServiceCallHistories { get; set; }
+        DbSet<ServiceCallFeedback> ServiceCallFeedbacks { get; set; }
+        DbSet<ClaimMaster> ClaimMasters { get; set; }
+        #endregion
+        
         //Db First
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
         {
           
             //Generate Id
-
 
             string loginUserId = "";
             var httpContextAccessor = this.GetService<IHttpContextAccessor>();

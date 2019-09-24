@@ -21,5 +21,7 @@ namespace SME.ServiceAPI.Data.Interface
         T Find<T>(Expression<Func<T, bool>> predicate) where T : class;
         T Single<T>(Expression<Func<T, bool>> expression) where T : class;
         bool Contains<T>(Expression<Func<T, bool>> predicate) where T : class;
+
+        Task<string> GetKey(string keyType);
     }
 }

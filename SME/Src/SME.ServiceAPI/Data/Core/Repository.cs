@@ -87,5 +87,24 @@ namespace SME.ServiceAPI.Data.Core
             _context.Database.ExecuteSqlCommand(procedureCommand, sqlParams);
         }
 
+        public Task<string> GetKey(string keyType) 
+        {
+            object keyValue = "";
+
+
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXEC [GenerateKey] '" + keyType + "'";
+                _context.Database.OpenConnection();
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        keyValue = result[0];
+                    }
+                }
+            }
+            return Task.FromResult<string>(keyValue.ToString());
+        }
     }
 }

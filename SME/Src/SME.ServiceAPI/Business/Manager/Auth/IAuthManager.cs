@@ -9,5 +9,7 @@ namespace SME.ServiceAPI.Business.Manager.Auth
    public interface IAuthManager
     {
         Task<AuthLoginReponse> Authenticate(string user, string password);
+
+        Task<string> GetKey(string keyType);
     }
 }

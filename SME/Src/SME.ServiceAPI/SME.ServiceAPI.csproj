@@ -21,6 +21,8 @@
   <ItemGroup>
     <Folder Include="Business\Logging\" />
     <Folder Include="Common\Logging\" />
+    <Folder Include="Data\Migrations\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

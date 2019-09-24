@@ -13,6 +13,10 @@ namespace SME.ServiceAPI.Common.Entities
         public int  Rating { get; set; }
         public string Remarks { get; set; }
         public DateTime? CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
+        public string ModifieidBy { get; set; }
+
+        public virtual ServiceCall ServiceCall { get; set; }
     }
 }

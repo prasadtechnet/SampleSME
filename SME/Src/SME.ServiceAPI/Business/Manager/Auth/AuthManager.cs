@@ -42,5 +42,12 @@ namespace SME.ServiceAPI.Business.Manager.Auth
 
             return resp;
         }
+
+        public async Task<string> GetKey(string keyType)
+        {
+
+            return await _repository.GetKey("TDO");
+
+        }
     }
 }
