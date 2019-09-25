@@ -1,4 +1,5 @@
-﻿using SME.ServiceAPI.Business.Manager.Core;
+﻿using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Business.Manager.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace SME.ServiceAPI.Business.Manager.Product
 {
    public interface IProductManager:IActionManager
     {
-        Task GetProduct(string Id);
+        Task<ProductModel> GetProduct(string Id);
+
     }
 }

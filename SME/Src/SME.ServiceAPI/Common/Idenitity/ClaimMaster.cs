@@ -9,7 +9,7 @@ namespace SME.ServiceAPI.Common.Idenitity
     public class ClaimMaster
     {
         public int Id { get; set; }
-        public string Category { get; set; }
+        public string Category { get; set; }//claimType
         public string ClaimValue { get; set; }
     }
 }

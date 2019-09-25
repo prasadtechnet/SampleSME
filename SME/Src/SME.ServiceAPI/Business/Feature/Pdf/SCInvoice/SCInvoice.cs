@@ -8,7 +8,7 @@ namespace SME.ServiceAPI.Business.Feature.Pdf.SCInvoice
 {
     public class SCInvoice : ISCInvoice
     {
-        public byte[] GeneratePdf(SCInvoiceModel objSCInvoiceModel, ref StringBuilder sbLog)
+        public async Task<byte[]> GeneratePdf(SCInvoiceModel objSCInvoiceModel)
         {
             throw new NotImplementedException();
         }

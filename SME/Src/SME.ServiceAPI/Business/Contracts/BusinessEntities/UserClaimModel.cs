@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
 {
-    public class ClaimModel : BaseEntity
+    public class UserClaimModel : BaseEntity
     {
-        public int Id { get; set; }
-        public string Category { get; set; }//claimType
+        public string UserId { get; set; }
+        public string ClaimType { get; set; }
         public string ClaimValue { get; set; }
+        public string ClaimId { get; set; }//master
     }
 }

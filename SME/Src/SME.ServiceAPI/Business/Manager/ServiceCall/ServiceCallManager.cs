@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.BusinessFlow;
 using SME.ServiceAPI.Business.BusinessFlow.Core;
 using SME.ServiceAPI.Business.Contracts;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 using SME.ServiceAPI.Data.Interface;
 
 namespace SME.ServiceAPI.Business.Manager.ServiceCall
@@ -30,79 +31,65 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
 
         #endregion
 
+        #region ServiceCall
+        public async Task<bool> CreateServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> AssignServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> NotAcceptedServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> NotResolveServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> ResolvedServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> AcceptServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> CloseServiceCall(ServiceCallModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<ServiceCallModel> GetServiceCallDetails(string Id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Feedback
+        public async Task<bool> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region History
+        public async Task<List<ServiceCallHistoryModel>> TrackServiceCall(string Id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        
+        #region SaveChanges commit
         public async Task SaveChangesAsync()
         {
-            await _unitofWork.SaveChangesAsync();
-        }
-        public Task Create(BaseEntity entity)
-        {
-
             throw new NotImplementedException();
         }
-
-        public Task CreateServiceCallFeedback()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(BaseEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<BaseEntity>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task GetFeedbackOfCall(string ServiceCallId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task GetHistoryOfCall(string ServiceCallId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task GetProductsOfCall(string ServiceCallId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(BaseEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AssignServiceCall()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AcceptServiceCall()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task NotAcceptServiceCall()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task NotResolvedServiceCall()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ResolvedServiceCall()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CloseServiceCall()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
+        
     }
 }

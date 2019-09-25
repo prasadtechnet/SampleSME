@@ -31,53 +31,48 @@ namespace SME.ServiceAPI.Business.Manager.Customer
             _serviceCallManager = serviceCallManager;
         }
 
+
+
+        #endregion             
+
+        #region Customer
+       
+        public async Task<bool> UpdateCustomer(CustomerModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> CreateCustomer(CustomerModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CustomerModel> CustomerById(string Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CustomerModel> CustomerByName(string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<CustomerModel>> Customers(string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteCustomer(string Id)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
+        #region SaveChanges commit
         public async Task SaveChangesAsync()
         {
-            await _unitofWork.SaveChangesAsync();
-        }
-        public async Task Create(BaseEntity entity)
-        {
-            var customerEntity = _mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(entity as CustomerModel);
-            
-            _repository.Create<SME.ServiceAPI.Common.Entities.Customer>(customerEntity);
-            await _unitofWork.SaveChangesAsync();
-          
-        }
-
-        public Task CreateServiceCall()
-        {
             throw new NotImplementedException();
         }
-
-        public Task Delete(BaseEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<BaseEntity>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-      
-
-    
-
-        public Task ServiceCallFeedback()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task TrackServiceCall(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(BaseEntity entity)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

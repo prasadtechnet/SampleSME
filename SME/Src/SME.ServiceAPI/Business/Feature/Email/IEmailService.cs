@@ -7,6 +7,6 @@ namespace SME.ServiceAPI.Business.Feature.Email
 {
     public interface IEmailService
     {
-
+        Task<bool> SendEmail();
     }
 }

@@ -13,6 +13,9 @@ namespace SME.ServiceAPI.Business.Feature.Email
             _config = config;
         }
 
-
+        public async Task<bool> SendEmail()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

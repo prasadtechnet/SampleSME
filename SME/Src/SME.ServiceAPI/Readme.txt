@@ -24,5 +24,47 @@ Status:
 4.Closed
 
 
+Managers
+  1.Auth
+    1.1. Authenticate
+	1.2. RefreshToken
+
+  2.Customer
+    2.1. Create
+	2.2. Update
+	2.3. Delete set flag
+	2.4. CustomerById(include products)
+	2.5. CustomerByName(include products)
+	2.6. Customers(not include childs)
+	
+  3. Product
+     3.1 Create
+	 3.2 Update
+	 3.3 Delete
+	 3.4 Products
+	 3.5 ProductById
+	 3.5 ProductByName
+
+  4.User(Role+Claims)
+    4.1 RoleCreate
+	4.2 UserCreate
+	4.3 ClaimCreate
+	4.4 ClaimUpdate
+	4.5 RoleClaimAssign
+	4.6 UserRoleAssign
+	4.7 UserClaimAssign
+	4.8 UserProfileEdit
+	
+  5.ServiceCall
+    5.1 Create
+	5.2 AssignCall
+	5.3 ReAssignCall
+	5.4 AcceptCall
+	5.5 NotAcceptCall
+	5.6 NotResolvedCall
+	5.7 ResolvedCall
+	5.8 ClosedCall
+	5.9 CreateFeedback
+	5.10 TrackServiceCall(History)
 
 

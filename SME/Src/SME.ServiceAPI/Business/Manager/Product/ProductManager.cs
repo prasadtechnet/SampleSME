@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.Contracts;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 using SME.ServiceAPI.Business.Manager.Customer;
 using SME.ServiceAPI.Data.Interface;
 
@@ -25,43 +26,44 @@ namespace SME.ServiceAPI.Business.Manager.Product
             _logger = logger;
         }
 
-
         #endregion
 
-        public async Task SaveChangesAsync()
-        {
-            await _unitofWork.SaveChangesAsync();
-        }
-        public Task Create(BaseEntity entity)
+        #region product
+
+     
+        public async Task Create(BaseEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(BaseEntity entity)
+        public async Task Delete(BaseEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<BaseEntity>> GetAll()
+        public async Task<IEnumerable<BaseEntity>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task GetProduct(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveChanges()
+        public async Task<ProductModel> GetProduct(string Id)
         {
             throw new NotImplementedException();
         }
 
       
 
-        public Task Update(BaseEntity entity)
+        public async Task Update(BaseEntity entity)
         {
             throw new NotImplementedException();
         }
+        #endregion
+
+        #region SaveChanges commit
+        public async Task SaveChangesAsync()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

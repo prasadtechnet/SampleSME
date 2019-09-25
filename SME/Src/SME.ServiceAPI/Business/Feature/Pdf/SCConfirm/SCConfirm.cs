@@ -8,7 +8,7 @@ namespace SME.ServiceAPI.Business.Feature.Pdf.SCConfirm
 {
     public class SCConfirm : ISCConfirm
     {
-        public byte[] GeneratePdf(SCConfirmModel objSCConfirmModel, ref StringBuilder sbLog)
+        public async Task<byte[]> GeneratePdf(SCConfirmModel objSCConfirmModel)
         {
             throw new NotImplementedException();
         }

@@ -9,6 +9,7 @@ using SME.ServiceAPI.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.BusinessFlow
 {
@@ -33,9 +34,9 @@ namespace SME.ServiceAPI.Business.BusinessFlow
             _hdlerStatus = objDict[objCall.Status.ToUpper()];
         }
 
-        public void Execute()
+        public async Task Execute()
         {
-            _hdlerStatus.Handle();
+          await _hdlerStatus.Handle();
         }
 
         public class OpenHandler : IWorkflowHandler, IDisposable
@@ -56,13 +57,18 @@ namespace SME.ServiceAPI.Business.BusinessFlow
 
           
 
-            public  void Handle()
+            public async Task Handle()
             {   //create call
                 //create history
+                //prepare pdf
                 //send email to customer
                 try
                 {
-
+                   await _repository.Create<ServiceCall>(_call);
+                   await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                   await _unitOfWork.SaveChangesAsync();
+                    var objPdf = await _featureModule.GetPdfModule().GetPdfConfirm().GeneratePdf(new Feature.Pdf.SCConfirm.SCConfirmModel { });
+                   await _featureModule.GetEmailService().SendEmail();
                 }
                 catch (System.Exception ex)
                 {
@@ -89,14 +95,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _featureModule = featureModule;
                 _logger = logger;
             }
-            public  void Handle()
+            public async Task Handle()
             {
                 //update call
                 //create history
                 //send email to tech
                 try
                 {
-
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();
+                    await _featureModule.GetEmailService().SendEmail();
                 }
                 catch (System.Exception ex)
                 {
@@ -121,13 +130,15 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
-            public void Handle()
+            public async Task Handle()
             {
                 //update call
                 //create history               
                 try
-                {
-
+                {                  
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();                   
                 }
                 catch (System.Exception ex)
                 {
@@ -152,13 +163,18 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
-            public void Handle()
+            public async Task Handle()
             {
                 //update call
-                //create history               
+                //create history 
+              
                 try
                 {
-
+                    _call.Status = "Open";
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();
+                  
                 }
                 catch (System.Exception ex)
                 {
@@ -184,13 +200,15 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _unitOfWork = unitOfWork;
                 _logger = logger;
             }
-            public  void Handle()
+            public async Task Handle()
             {
                 //update call
                 //create history               
                 try
                 {
-
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();
                 }
                 catch (System.Exception ex)
                 {
@@ -218,14 +236,17 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _featureModule = featureModule;
                 _logger = logger;
             }
-            public void Handle()
+            public async Task Handle()
             {
                 //update call
                 //create history     
                 //send email to manager
                 try
                 {
-
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();
+                    await _featureModule.GetEmailService().SendEmail();
                 }
                 catch (System.Exception ex)
                 {
@@ -253,14 +274,18 @@ namespace SME.ServiceAPI.Business.BusinessFlow
                 _featureModule = featureModule;
                 _logger = logger;
             }
-            public  void Handle()
+            public async Task Handle()
             {
                 //update call
                 //create history       
                 //send mail to cutomer regarding close and ask for feedback link
                 try
                 {
-
+                    await _repository.Update<ServiceCall>(_call);
+                    await _repository.Create<ServiceCallHistory>(new ServiceCallHistory { });
+                    await _unitOfWork.SaveChangesAsync();
+                    var objPdf = await _featureModule.GetPdfModule().GetPdfInvoice().GeneratePdf(new Feature.Pdf.SCInvoice.SCInvoiceModel { });
+                    await _featureModule.GetEmailService().SendEmail();
                 }
                 catch (System.Exception ex)
                 {

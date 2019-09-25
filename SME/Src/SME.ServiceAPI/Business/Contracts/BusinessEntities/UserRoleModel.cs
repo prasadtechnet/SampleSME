@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
 {
-    public class CustomerProduct : BaseEntity
+    public class UserRoleModel : BaseEntity
     {
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
     }
 }

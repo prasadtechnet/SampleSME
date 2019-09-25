@@ -10,8 +10,8 @@ namespace SME.ServiceAPI.Business.Contracts.BusinessEntities.Validators
     {
         public ProductValidator()
         {
-            RuleFor(c => c.Name).NotEmpty();
-            RuleFor(c => c.Description).NotEmpty();
+            RuleFor(c => c.Name).NotEmpty();           
+            RuleFor(c => c.Price).NotEmpty().GreaterThan(0);
         }
     }
 }

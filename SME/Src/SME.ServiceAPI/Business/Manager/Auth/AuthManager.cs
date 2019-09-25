@@ -1,6 +1,9 @@
 ﻿using JwtRsaAPI.JWT;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.Contracts.Response;
+using SME.ServiceAPI.Business.Manager.User;
+using SME.ServiceAPI.Common.Idenitity;
 using SME.ServiceAPI.Data.Interface;
 using System;
 using System.Collections.Generic;
@@ -16,21 +19,44 @@ namespace SME.ServiceAPI.Business.Manager.Auth
         private readonly IUnitOfWork _unitofWork;
         private ILogger<AuthManager> _logger;
         private IJWTHandler _jwtManager;
+        private SignInManager<AppUser> _userManager;
         #endregion
 
         #region Constructor
-        public AuthManager(IJWTHandler jwtManager, IRepository repository, IUnitOfWork unitofWork, ILogger<AuthManager> logger)
+        public AuthManager(IJWTHandler jwtManager,SignInManager<AppUser> userManager,IRepository repository, IUnitOfWork unitofWork, ILogger<AuthManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
             _logger = logger;
             _jwtManager = jwtManager;
+            _userManager = userManager;
         }
         #endregion
         public async Task<AuthLoginReponse> Authenticate(string user,string password)
         {
             var resp= new AuthLoginReponse { };
-          var jwtResp=await _jwtManager.GenerateToken1(user);
+
+            AppUser appUser = null;
+            appUser = await _userManager.UserManager.FindByNameAsync(user);
+
+            var objSignIn = await _userManager.CheckPasswordSignInAsync(appUser, password, false);
+
+
+            if (objSignIn.IsNotAllowed)
+                return new AuthLoginReponse { Errors = new[] { "user not allowed to signin" } };
+
+            if (objSignIn.IsLockedOut)
+                return new AuthLoginReponse { Errors = new[] { "user locked out" } };
+
+            if (objSignIn.RequiresTwoFactor)
+                return new AuthLoginReponse { Errors = new[] { "requires two factor login" } };
+
+            if (!objSignIn.Succeeded)
+                return new AuthLoginReponse {Errors=new[] {"Invalid credentials"} };
+
+                  
+
+            var jwtResp=await _jwtManager.GenerateToken1(appUser.Email);
             if (jwtResp.Success)
             {
                 resp.Token = jwtResp.Token;
@@ -48,6 +74,11 @@ namespace SME.ServiceAPI.Business.Manager.Auth
 
             return await _repository.GetKey("TDO");
 
+        }
+
+        public Task<AuthLoginReponse> RefreshToken(string token)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -11,7 +11,8 @@ namespace SME.ServiceAPI.Common.Entities
     {
         public string Id { get; set; }
         public string CustomerId { get; set; }    
-        public string UserId { get; set; }
+        public string UserId { get; set; }//Manager
+        public string TechnicianId { get; set; }//Technician Id
         public int BranchId { get; set; }
         public string Status { get; set; }
         public int NoOfProducts { get; set; }

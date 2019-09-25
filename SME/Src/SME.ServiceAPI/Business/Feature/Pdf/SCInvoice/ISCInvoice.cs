@@ -8,6 +8,6 @@ namespace SME.ServiceAPI.Business.Feature.Pdf.SCInvoice
 {
     public interface ISCInvoice
     {
-        byte[] GeneratePdf(SCInvoiceModel objSCInvoiceModel, ref StringBuilder sbLog);
+        Task<byte[]> GeneratePdf(SCInvoiceModel objSCInvoiceModel);
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities.Validators
 {
-    public class ClaimValidator: AbstractValidator<ClaimModel>
+    public class RoleClaimValidator:AbstractValidator<RoleClaimModel>
     {
-        public ClaimValidator()
+        public RoleClaimValidator()
         {
-            RuleFor(c => c.Category).NotEmpty();
+            RuleFor(c => c.RoleId).NotEmpty();
+            RuleFor(c => c.ClaimType).NotEmpty();
             RuleFor(c => c.ClaimValue).NotEmpty();
         }
     }

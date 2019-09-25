@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 using SME.ServiceAPI.Common.Idenitity;
 using SME.ServiceAPI.Data.Interface;
 using System;
@@ -30,72 +31,105 @@ namespace SME.ServiceAPI.Business.Manager.User
         }
 
 
+
+
+        #endregion
+               
+        #region Role
+        public async Task<bool> CreateRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> RoleClaimAssign()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> DeleteRoleClaim()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
+        #region User
+        public async Task<bool> CreateUser(UserModel appUser)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> UpdateUser(UserModel appUser)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> UserClaimAssign()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UserRoleAssign(UserRoleModel userRole)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> DeleteUserClaim()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<List<UserClaimModel>> GetUserAssignedClaims(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<UserClaimModel>> GetUserPermittedClaims(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<int>> GetUserPermittedClaimsWithMapping(string userId)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<UserModel> GetUserById(string userId)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<AppUser> GetUserByIdOrEmailorUserNameOrMobile(string user_name_email_mobile)
+        {
+
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region  CliamMaster
+        public async Task<bool> CreateClaim(ClaimModel claim)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<bool> UpdateClaim(ClaimModel claim)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ClaimModel> GetClaimById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<ClaimModel>> GetClaims()
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<List<RoleClaimModel>> GetRoleAssignedClaims(string roleId)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region SaveChanges commit
         public async Task SaveChangesAsync()
         {
-            await _unitofWork.SaveChangesAsync();
-        }
-
-        public Task UpdateClaimMaster()
-        {
             throw new NotImplementedException();
         }
 
-        public Task UpdateUser(AppUser appUser)
-        {
-            throw new NotImplementedException();
-        }
-        public Task AddRoleClaim()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
-        public Task AddUserClaim()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AssignRole(IdentityRole role)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateClaimMaster()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateUser(AppUser appUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteClaimMaster()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteRoleClaim()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteUser(AppUser appUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteUserClaim()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task GetUserRoleClaims(AppUser appUser)
-        {
-            throw new NotImplementedException();
-        }
-
-       
     }
 }

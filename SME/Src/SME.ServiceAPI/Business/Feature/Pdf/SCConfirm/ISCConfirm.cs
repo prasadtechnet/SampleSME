@@ -8,6 +8,6 @@ namespace SME.ServiceAPI.Business.Feature.Pdf.SCConfirm
 {
     public interface ISCConfirm
     {
-        byte[] GeneratePdf(SCConfirmModel objSCInvoiceModel, ref StringBuilder sbLog);
+        Task<byte[]> GeneratePdf(SCConfirmModel objSCInvoiceModel);
     }
 }

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
 {
-    public class ApplicationUser:BaseEntity
+    public class UserModel : BaseEntity
     {
-       
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
     }
 }

@@ -169,6 +169,8 @@ namespace SME.ServiceAPI.Migrations
 
                     b.Property<string>("LogonName");
 
+                    b.Property<string>("Password");
+
                     b.Property<string>("Mobile");
 
                     b.Property<DateTime?>("ModifiedOn");
@@ -256,7 +258,7 @@ namespace SME.ServiceAPI.Migrations
 
                     b.Property<string>("CustomerId");
 
-                    b.Property<decimal?>("GST");
+                    b.Property<decimal?>("GST");                    
 
                     b.Property<DateTime?>("ModifiedOn");
 
@@ -269,6 +271,8 @@ namespace SME.ServiceAPI.Migrations
                     b.Property<decimal?>("TotalAmount");
 
                     b.Property<string>("UserId");
+
+                    b.Property<string>("TechnicianId");
 
                     b.HasKey("Id");
 

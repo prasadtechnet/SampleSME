@@ -20,17 +20,17 @@ namespace SME.ServiceAPI.Data.Core
            _context = dbFactory.GetDataContext;
         }
       
-        public T Single<T>(Expression<Func<T, bool>> expression) where T : class
+        public async Task<T> Single<T>(Expression<Func<T, bool>> expression) where T : class
         {
-            return All<T>().FirstOrDefault(expression);
+            return  _context.Set<T>().AsQueryable().FirstOrDefault(expression);
         }
 
-        public IQueryable<T> All<T>() where T : class
+        public async Task<IQueryable<T>> All<T>() where T : class
         {
             return _context.Set<T>().AsQueryable();
         }
 
-        public virtual IEnumerable<T> Filter<T>(Expression<Func<T, bool>> predicate) where T : class
+        public virtual async Task<IEnumerable<T>> Filter<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             return _context.Set<T>().Where<T>(predicate).AsQueryable<T>();
         }
@@ -44,17 +44,19 @@ namespace SME.ServiceAPI.Data.Core
             return _resetSet.AsQueryable();
         }
 
-        public virtual void Create<T>(T TObject) where T : class
+        public virtual async Task Create<T>(T TObject) where T : class
         {
             var newEntry = _context.Set<T>().Add(TObject);
+          
         }
 
-        public virtual void Delete<T>(T TObject) where T : class
+        public virtual async Task Delete<T>(T TObject) where T : class
         {
             _context.Set<T>().Remove(TObject);
+           
         }
 
-        public virtual void Update<T>(T TObject) where T : class
+        public virtual async Task Update<T>(T TObject) where T : class
         {
             try
             {
@@ -62,27 +64,30 @@ namespace SME.ServiceAPI.Data.Core
                 var entry = _context.Entry(TObject);
                 _context.Set<T>().Attach(TObject);
                 entry.State = EntityState.Modified;
+               
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public virtual void Delete<T>(Expression<Func<T, bool>> predicate) where T : class
+        public virtual async Task Delete<T>(Expression<Func<T, bool>> predicate) where T : class
         {
-            var objects = Filter<T>(predicate);
+            var objects = await Filter<T>(predicate);
             foreach (var obj in objects)
                 _context.Set<T>().Remove(obj);
+
+           
         }
-        public bool Contains<T>(Expression<Func<T, bool>> predicate) where T : class
+        public async Task<bool> Contains<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             return _context.Set<T>().Count<T>(predicate) > 0;
         }
-        public virtual T Find<T>(Expression<Func<T, bool>> predicate) where T : class
+        public virtual async Task<T> Find<T>(Expression<Func<T, bool>> predicate) where T : class
         {
             return _context.Set<T>().FirstOrDefault<T>(predicate);
         }
-        public virtual void ExecuteProcedure(String procedureCommand, params object[] sqlParams)
+        public virtual async Task ExecuteProcedure(String procedureCommand, params object[] sqlParams)
         {
             _context.Database.ExecuteSqlCommand(procedureCommand, sqlParams);
         }

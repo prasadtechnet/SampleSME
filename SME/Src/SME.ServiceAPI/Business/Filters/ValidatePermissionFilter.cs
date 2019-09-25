@@ -23,7 +23,7 @@ namespace SME.ServiceAPI.Business.Filters
                 return;
             var permission= context.HttpContext.User.Claims.Single(x => x.Type == "permission").Value;
             if (String.IsNullOrEmpty(permission))
-               throw new UnauthorizedAccessException("dont have permission") ;
+               throw new UnauthorizedAccessException("dont have permission");
 
             var blRes = permission.Split(',').ToList().Contains(_proc);
 

@@ -26,12 +26,12 @@ namespace SME.ServiceAPI.Controllers
             return Ok(resp);
         }
 
-        [HttpPost("sp")]
-        public async Task<IActionResult> TestStoredprocedure()
-        {
-            var resp = await _authManager.GetKey("TDO");
+        //[HttpPost("sp")]
+        //public async Task<IActionResult> TestStoredprocedure()
+        //{
+        //    var resp = await _authManager.GetKey("TDO");
 
-            return Ok(resp);
-        }
+        //    return Ok(resp);
+        //}
     }
 }
