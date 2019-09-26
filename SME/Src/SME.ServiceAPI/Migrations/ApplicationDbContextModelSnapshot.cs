@@ -236,7 +236,7 @@ namespace SME.ServiceAPI.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<decimal?>("Price");
+                    b.Property<decimal?>("Price").HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

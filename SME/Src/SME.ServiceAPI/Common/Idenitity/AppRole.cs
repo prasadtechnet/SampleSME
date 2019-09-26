@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Common.Idenitity
 {
-    public class AppUser:IdentityUser<string>
+    public class AppRole:IdentityRole<string>
     {
         public override string Id { get; set; }
-        public override bool LockoutEnabled { get; set; } = false;
     }
 }

@@ -49,7 +49,7 @@ namespace SME.ServiceAPI.Business.Manager.User
         Task<List<UserClaimModel>> GetUserPermittedClaims(string userId);
         Task<List<int>> GetUserPermittedClaimsWithMapping(string userId);
 
-        Task SaveChangesAsync();
+       // Task SaveChangesAsync();
 
         //  Task DeleteUser(AppUser appUser);
         //  Task<bool> DeleteClaim(ClaimModel claim);

@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Manager.Product
 {
-   public interface IProductManager:IActionManager
+   public interface IProductManager
+
     {
-        Task<ProductModel> GetProduct(string Id);
+        Task<bool> CreateProduct(ProductModel objInput);
+        Task<bool> UpdateProduct(ProductModel objInput);
+        Task<bool> DeleteProduct(string Id);     
+        Task<ProductModel> GetProductById(string id);
+
+        Task<ProductModel> GetProductByName(string name);
+        Task<List<ProductModel>> GetProducts();
 
     }
 }

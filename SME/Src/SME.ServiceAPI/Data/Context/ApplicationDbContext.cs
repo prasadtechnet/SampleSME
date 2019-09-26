@@ -15,7 +15,7 @@ using SME.ServiceAPI.Common.Idenitity;
 
 namespace SME.ServiceAPI.Data.Context
 {
-    public partial class ApplicationDbContext : IdentityDbContext<AppUser>
+    public partial class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -49,8 +49,10 @@ namespace SME.ServiceAPI.Data.Context
         DbSet<ServiceCallHistory> ServiceCallHistories { get; set; }
         DbSet<ServiceCallFeedback> ServiceCallFeedbacks { get; set; }
         DbSet<ClaimMaster> ClaimMasters { get; set; }
+
+     
         #endregion
-        
+
         //Db First
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -80,7 +82,7 @@ namespace SME.ServiceAPI.Data.Context
                 if (item.State == EntityState.Added)
                 {
                     object keyGenerated = "";
-                    string keyColumn = "";// ModelKeyFactory.GetKey(EntityType.Name);
+                    string keyColumn = PrimaryFactory.GetKey(EntityType.Name.ToUpper());// ModelKeyFactory.GetKey(EntityType.Name);
                     if (keyColumn != null && keyColumn.Length > 0)
                     {
                         PropertyInfo pInfoCreatedOn = EntityType.GetProperty("CreatedOn");

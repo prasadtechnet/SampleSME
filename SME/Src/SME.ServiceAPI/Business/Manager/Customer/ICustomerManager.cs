@@ -25,6 +25,6 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         Task<CustomerModel> CustomerByName(string Name);
         Task<List<CustomerModel>> Customers(string Name);
 
-        Task SaveChangesAsync();
+       // Task SaveChangesAsync();
     }
 }

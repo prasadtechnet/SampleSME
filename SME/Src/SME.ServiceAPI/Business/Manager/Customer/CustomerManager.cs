@@ -29,6 +29,7 @@ namespace SME.ServiceAPI.Business.Manager.Customer
             _unitofWork = unitofWork;
             _logger = logger;
             _serviceCallManager = serviceCallManager;
+            _mapper = mapper;
         }
 
 
@@ -39,27 +40,53 @@ namespace SME.ServiceAPI.Business.Manager.Customer
        
         public async Task<bool> UpdateCustomer(CustomerModel objInput)
         {
-            throw new NotImplementedException();
+            await _repository.Update<SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
+
+            await _unitofWork.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<bool> CreateCustomer(CustomerModel objInput)
         {
-            throw new NotImplementedException();
+            await _repository.Create< SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
+
+            await _unitofWork.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<CustomerModel> CustomerById(string Id)
         {
-            throw new NotImplementedException();
+            var objCust= await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x=>x.Id==Id);
+            if (objCust != null)
+            {
+                return _mapper.Map<CustomerModel>(objCust);
+            }
+
+            return null;
         }
 
         public async Task<CustomerModel> CustomerByName(string Name)
         {
-            throw new NotImplementedException();
+            var objCust = await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x => x.Name == Name);
+            if (objCust != null)
+            {
+                return _mapper.Map<CustomerModel>(objCust);
+            }
+
+            return null;
         }
 
         public async Task<List<CustomerModel>> Customers(string Name)
         {
-            throw new NotImplementedException();
+            var objCust = await _repository.All<SME.ServiceAPI.Common.Entities.Customer>();
+            if (objCust != null)
+            {
+                return objCust.Select(x=>_mapper.Map<CustomerModel>(x)).ToList();
+            }
+
+            return null;
         }
 
         public async Task<bool> DeleteCustomer(string Id)
@@ -69,10 +96,10 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         #endregion
 
         #region SaveChanges commit
-        public async Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task SaveChangesAsync()
+        //{
+        //    _unitofWork.SaveChangesAsync();
+        //}
         #endregion
     }
 }

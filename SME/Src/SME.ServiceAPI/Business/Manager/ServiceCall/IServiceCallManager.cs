@@ -29,7 +29,7 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         Task<bool> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput);
         Task<ServiceCallModel> GetServiceCallDetails(string Id);
 
-        Task SaveChangesAsync();
+      //  Task SaveChangesAsync();
 
     }
 }

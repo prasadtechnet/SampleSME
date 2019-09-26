@@ -35,16 +35,22 @@ namespace SME.ServiceAPI.Business.Extensions
                 return false;
             }
 
-           var permission=  httpContext.User.Claims.Single(x => x.Type == "permission").Value;
 
-            if (String.IsNullOrEmpty(permission))
-                return false;
+            if (httpContext.User.Claims.FirstOrDefault(x => x.Type == "permission") != null)
+            {
+                var permission = httpContext.User.Claims.Single(x => x.Type == "permission").Value;
 
-            var blRes = permission.Split(',').ToList().Contains(process);
-            if (!blRes)
-                return false;
+                if (String.IsNullOrEmpty(permission))
+                    return false;
 
-            return true;
+                var blRes = permission.Split(',').ToList().Contains(process);
+                if (!blRes)
+                    return false;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

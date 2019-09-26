@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Business.BusinessFlow;
 using SME.ServiceAPI.Business.BusinessFlow.Core;
@@ -17,15 +18,17 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         private readonly IRepository _repository;
         private readonly IUnitOfWork _unitofWork;
         private ILogger<ServiceCallManager> _logger;
-       // private IWorkFlowManager _scFlowManager;
+        // private IWorkFlowManager _scFlowManager;
+        private IMapper _mapper;
         #endregion
-             
+
         #region Constructor
-        public ServiceCallManager(IRepository repository, IUnitOfWork unitofWork,  ILogger<ServiceCallManager> logger)
+        public ServiceCallManager(IRepository repository, IUnitOfWork unitofWork, IMapper mapper, ILogger<ServiceCallManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
-            _logger = logger;           
+            _logger = logger;
+            _mapper = mapper;
         }
 
 
@@ -85,10 +88,10 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         #endregion
         
         #region SaveChanges commit
-        public async Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task SaveChangesAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
         
     }

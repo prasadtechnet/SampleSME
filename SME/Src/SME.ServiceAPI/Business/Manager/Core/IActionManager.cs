@@ -16,6 +16,6 @@ namespace SME.ServiceAPI.Business.Manager.Core
         Task<IEnumerable<BaseEntity>> GetAll();
 
       //  void SaveChanges();
-        Task SaveChangesAsync();
+      //  Task SaveChangesAsync();
     }
 }

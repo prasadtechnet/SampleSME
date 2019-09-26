@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities.Validators;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SME.ServiceAPI.Business.Configuration
@@ -13,7 +15,9 @@ namespace SME.ServiceAPI.Business.Configuration
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddFluentValidation(fvg=>fvg.RegisterValidatorsFromAssemblyContaining<ServiceCallValidator>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Swagger
             services.AddSwaggerGen(config => {
