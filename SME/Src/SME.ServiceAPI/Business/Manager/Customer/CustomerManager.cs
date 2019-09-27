@@ -78,7 +78,7 @@ namespace SME.ServiceAPI.Business.Manager.Customer
             return null;
         }
 
-        public async Task<List<CustomerModel>> Customers(string Name)
+        public async Task<List<CustomerModel>> Customers()
         {
             var objCust = await _repository.All<SME.ServiceAPI.Common.Entities.Customer>();
             if (objCust != null)
@@ -90,6 +90,16 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         }
 
         public async Task<bool> DeleteCustomer(string Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CustomerAuthResponseModel> Authenticate(CustomerAuthRequestModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CustomerResetResponseModel> ResetPassword(CustomerResetRequestModel objInput)
         {
             throw new NotImplementedException();
         }

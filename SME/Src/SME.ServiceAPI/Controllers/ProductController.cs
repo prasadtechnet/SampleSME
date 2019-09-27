@@ -33,103 +33,103 @@ namespace SME.ServiceAPI.Controllers
 
         #region Endpoints
 
-        #region Product
-        [HttpGet("products")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetProducts()
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //#region Product
+        //[HttpGet("products")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //public async Task<IActionResult> GetProducts()
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
-            var objPrd = await _prdManager.GetProducts();
-            if (objPrd != null)
-                return Ok(objPrd);
+        //    var objPrd = await _prdManager.GetProducts();
+        //    if (objPrd != null)
+        //        return Ok(objPrd);
 
-            return NotFound("Products not found");
-        }
+        //    return NotFound("Products not found");
+        //}
 
-        [HttpGet("product/{Id}")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProductById([FromRoute] string Id)
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
-
-
-            var objPrd = await _prdManager.GetProductById(Id);
-            if (objPrd != null)
-                return Ok(objPrd);
-
-            return NotFound("Product not found");
-        }
-        [HttpGet("product/{Name}")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProductByName([FromRoute] string Name)
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //[HttpGet("product/{Id}")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> GetProductById([FromRoute] string Id)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
 
-            var objPrd = await _prdManager.GetProductByName(Name);
-            if (objPrd != null)
-                return Ok(objPrd);
+        //    var objPrd = await _prdManager.GetProductById(Id);
+        //    if (objPrd != null)
+        //        return Ok(objPrd);
 
-            return NotFound("Product not found");
-        }
-
-        [HttpPost("create")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModel objInput)
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
-
-
-            var blPrd = await _prdManager.CreateProduct(objInput);
-            if (blPrd)
-                return Ok(blPrd);
-            else
-
-                return BadRequest("Product not created");
-        }
-
-        [HttpPut("update")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductModel objInput)
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //    return NotFound("Product not found");
+        //}
+        //[HttpGet("product/{Name}")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> GetProductByName([FromRoute] string Name)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
 
-            var blPrd = await _prdManager.UpdateProduct(objInput);
-            if (blPrd)
-                return Ok(blPrd);
-            else
+        //    var objPrd = await _prdManager.GetProductByName(Name);
+        //    if (objPrd != null)
+        //        return Ok(objPrd);
 
-                return BadRequest("Product not updated");
-        }
+        //    return NotFound("Product not found");
+        //}
+
+        //[HttpPost("create")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> CreateProduct([FromBody] ProductModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
 
-        #endregion
+        //    var blPrd = await _prdManager.CreateProduct(objInput);
+        //    if (blPrd)
+        //        return Ok(blPrd);
+        //    else
+
+        //        return BadRequest("Product not created");
+        //}
+
+        //[HttpPut("update")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> UpdateProduct([FromBody] ProductModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
+
+
+        //    var blPrd = await _prdManager.UpdateProduct(objInput);
+        //    if (blPrd)
+        //        return Ok(blPrd);
+        //    else
+
+        //        return BadRequest("Product not updated");
+        //}
+
+
+        //#endregion
 
         #endregion
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 using SME.ServiceAPI.Common.Entities;
+using SME.ServiceAPI.Common.Idenitity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,24 @@ namespace SME.ServiceAPI.Business.Mapper
             CreateMap<ServiceCallFeedback, ServiceCallFeedbackModel>();
             CreateMap<IdentityUserClaim<string>, UserClaimModel>();
             CreateMap<IdentityRoleClaim<string>, RoleClaimModel>();
-            CreateMap<IdentityUserRole<string>, UserRoleModel>();
+            CreateMap<IdentityUserRole<string>, UserRoleAssignModel>();
+
+            CreateMap<AppUser, UserModel>()
+              .ForMember(d => d.Phone, s => s.MapFrom(x => x.PhoneNumber)).ReverseMap();
+
+            CreateMap<AppUser, UserModel>()
+                .ForMember(d=>d.Phone,s=>s.MapFrom(x=>x.PhoneNumber)).ReverseMap();
+
+            CreateMap<AppUser, UserNewModel>()
+                .ForMember(d => d.Phone, s => s.MapFrom(x => x.PhoneNumber)).ReverseMap();
+
+            CreateMap<AppUser, UserEditModel>()
+                .ForMember(d => d.Phone, s => s.MapFrom(x => x.PhoneNumber)).ReverseMap();
+
+            CreateMap<AppRole, RoleModel>().ReverseMap();
+
+            CreateMap<ClaimMaster, ClaimNewModel>().ReverseMap();
+            CreateMap<ClaimMaster, ClaimModel>().ReverseMap();
         }
 
 

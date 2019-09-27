@@ -69,8 +69,7 @@ namespace SME.ServiceAPI.Migrations
                 name: "ClaimMasters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     Category = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },

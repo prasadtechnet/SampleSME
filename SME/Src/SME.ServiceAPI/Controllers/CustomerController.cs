@@ -11,6 +11,7 @@ using SME.ServiceAPI.Business.Extensions;
 using System.Net;
 using SME.ServiceAPI.Business.Manager.Customer;
 using Microsoft.Extensions.Logging;
+using SME.ServiceAPI.Business.Contracts.BusinessEntities;
 
 namespace SME.ServiceAPI.Controllers
 {
@@ -36,68 +37,144 @@ namespace SME.ServiceAPI.Controllers
 
         #region Endpoints
 
-        #region Customer Authentication
-        [HttpPost("login")]
-        // [ValidatePermissionFilter("6")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CustomerLogin()
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //#region Customer Authentication
+        //[HttpPost("login")]
+        //// [ValidatePermissionFilter("6")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //public async Task<IActionResult> CustomerLogin([FromBody]CustomerAuthRequestModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
-            return Ok("you will get data soon");
-        }
+        //    var objCust = await _customerManager.Authenticate(objInput);
+        //    if (objCust != null)
+        //        return Ok(objCust);
 
-        [HttpPost("passwordreset")]
-        // [ValidatePermissionFilter("6")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> PasswordReset()
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //    return NotFound("Customer not found");
 
-            return Ok("you will get data soon");
-        }
+         
+        //}
 
-        #endregion
+        //[HttpPost("passwordreset")]
+        //// [ValidatePermissionFilter("6")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //public async Task<IActionResult> PasswordReset([FromBody]CustomerResetRequestModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
-        #region Customer
+        //    var objCust = await _customerManager.ResetPassword(objInput);
+        //    if (objCust != null)
+        //        return Ok(objCust);
 
-        [HttpGet("all")]
-        // [ValidatePermissionFilter("6")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetCustomers()
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //    return NotFound("Customer not found");
+        //}
 
-            return Ok("you will get data soon");
-        }
+        //#endregion
 
-        [HttpGet("customer/{Id}")]
-        // [ValidatePermissionFilter("6")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetCustomerById(string Id)
-        {
-            //var IsValidClaim = HttpContext.ValidatePermission("2");
-            //if (!IsValidClaim)
-            //    return Unauthorized("you don't have permission");
+        //#region Customer
 
-            return Ok("you will get data soon");
-        }
+        //[HttpGet("all")]
+        //// [ValidatePermissionFilter("6")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //public async Task<IActionResult> GetCustomers()
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
 
-        #endregion
+        //    var objCust = await _customerManager.Customers();
+        //    if (objCust != null)
+        //        return Ok(objCust);
+
+        //    return NotFound("Customer not found");
+        //}
+
+        //[HttpGet("customer/{Id}")]
+        //// [ValidatePermissionFilter("6")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //public async Task<IActionResult> GetCustomerById(string Id)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
+
+        //    var objCust = await _customerManager.CustomerById(Id);
+        //    if (objCust != null)
+        //        return Ok(objCust);
+
+        //    return NotFound("Customer not found");
+        //}
+
+        //[HttpGet("customer/{Name}")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> GetCustomerByName([FromRoute] string Name)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
+
+
+        //    var objCust = await _customerManager.CustomerByName(Name);
+        //    if (objCust != null)
+        //        return Ok(objCust);
+
+        //    return NotFound("Customer not found");
+        //}
+        //[HttpPost("create")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> CreateCustomer([FromBody] CustomerModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
+
+
+        //    var blPrd = await _customerManager.CreateCustomer(objInput);
+        //    if (blPrd)
+        //        return Ok(blPrd);
+        //    else
+
+        //        return BadRequest("Customer not created");
+        //}
+
+        //[HttpPut("update")]
+        //[Produces("application/json")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //public async Task<IActionResult> UpdateCustomer([FromBody] CustomerModel objInput)
+        //{
+        //    //var IsValidClaim = HttpContext.ValidatePermission("2");
+        //    //if (!IsValidClaim)
+        //    //    return Unauthorized("you don't have permission");
+
+
+        //    var blPrd = await _customerManager.UpdateCustomer(objInput);
+        //    if (blPrd)
+        //        return Ok(blPrd);
+        //    else
+
+        //        return BadRequest("Customer not updated");
+        //}
+
+        //#endregion
 
 
         #endregion

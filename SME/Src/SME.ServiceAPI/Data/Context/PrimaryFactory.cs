@@ -15,13 +15,14 @@ namespace SME.ServiceAPI.Data.Context
                 {"APPUSER","Id"},
                 {"CUSTOMER","Id"},
                 {"PRODUCT","Id"},
-                {"BRANCH","Id"}
+                {"BRANCH","Id"},
+                {"CLAIMMASTER","Id"}
             };
         }
 
         public static string GetKey(string modelName)
         {
-            return _dictModelsId[modelName];
+            return _dictModelsId.ContainsKey(modelName)?_dictModelsId[modelName]:"";
         }
 
     }

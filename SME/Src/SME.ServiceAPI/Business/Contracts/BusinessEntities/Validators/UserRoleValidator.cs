@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SME.ServiceAPI.Business.Contracts.BusinessEntities.Validators
 {
-    public class UserRoleValidator: AbstractValidator<UserRoleModel>
+    public class UserRoleValidator: AbstractValidator<UserRoleAssignModel>
     {
         public UserRoleValidator()
         {
-            RuleFor(c => c.RoleId).NotEmpty();
+            RuleFor(c => c.RoleName).NotEmpty();
             RuleFor(c => c.UserId).NotEmpty();         
         }
     }

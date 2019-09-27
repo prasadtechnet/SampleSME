@@ -18,13 +18,13 @@ namespace SME.ServiceAPI.Controllers
         {
             _authManager = authManager;
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> Authenticate(AuthLoginModel authLogin)
-        {
-            var resp= await _authManager.Authenticate(authLogin.email, authLogin.password);
+        //[HttpPost("login")]
+        //public async Task<IActionResult> Authenticate(AuthLoginModel authLogin)
+        //{
+        //    var resp= await _authManager.Authenticate(authLogin.email, authLogin.password);
 
-            return Ok(resp);
-        }
+        //    return Ok(resp);
+        //}
 
         //[HttpPost("sp")]
         //public async Task<IActionResult> TestStoredprocedure()

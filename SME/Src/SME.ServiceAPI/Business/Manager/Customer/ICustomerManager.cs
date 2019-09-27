@@ -16,15 +16,20 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         //2.4. CustomerById(include products)
         //2.5. CustomerByName(include products)
         //2.6. Customers(not include childs)  
-
+        //2.7  Customer login
+        //2.8  Customer Password Reset
 
         Task<bool> CreateCustomer(CustomerModel objInput);
         Task<bool> UpdateCustomer(CustomerModel objInput);
         Task<bool> DeleteCustomer(string Id);
         Task<CustomerModel> CustomerById(string Id);
         Task<CustomerModel> CustomerByName(string Name);
-        Task<List<CustomerModel>> Customers(string Name);
+        Task<List<CustomerModel>> Customers();
 
-       // Task SaveChangesAsync();
+        Task<CustomerAuthResponseModel> Authenticate(CustomerAuthRequestModel objInput);
+
+        Task<CustomerResetResponseModel> ResetPassword(CustomerResetRequestModel objInput);
+
+        // Task SaveChangesAsync();
     }
 }

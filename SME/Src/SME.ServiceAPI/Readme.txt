@@ -36,7 +36,9 @@ Managers
 	2.4. CustomerById(include products)
 	2.5. CustomerByName(include products)
 	2.6. Customers(not include childs)
-	
+	2.7. Customer Login
+	2.8. Customer Password Reset
+
   3. Product
      3.1 Create
 	 3.2 Update

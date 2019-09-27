@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Business.Contracts.Response;
 using SME.ServiceAPI.Business.Manager.Core;
 using SME.ServiceAPI.Common.Idenitity;
 using System;
@@ -21,27 +22,31 @@ namespace SME.ServiceAPI.Business.Manager.User
         //4.7 UserClaimAssign
         //4.8 UserProfileEdit(UserUpdate)
 
-        Task<bool> CreateRole(string roleName);
+        Task<ResponseModel> CreateRole(string roleName);
 
-        Task<bool> CreateUser(UserModel appUser);
-        Task<bool> UpdateUser(UserModel appUser);
+        Task<List<RoleModel>> Roles();
 
+        Task<ResponseModel> CreateUser(UserNewModel appUser);
+        Task<ResponseModel> UpdateUser(UserEditModel appUser);
+
+        Task<List<UserModel>> Users();
         Task<UserModel> GetUserById(string userId);
-        Task<AppUser> GetUserByIdOrEmailorUserNameOrMobile(string user_name_email_mobile);
+        Task<UserModel> GetUserByIdOrEmailorUserNameOrMobile(string user_name_email);
 
-        Task UserRoleAssign(UserRoleModel userRole);
+        Task<ResponseModel> UserRoleAssign(UserRoleAssignModel userRole);
 
-        Task<bool> CreateClaim(ClaimModel claim);
+        Task<ResponseModel> CreateClaim(ClaimNewModel claim);
   
-        Task<bool> UpdateClaim(ClaimModel claim);
+        Task<ResponseModel> UpdateClaim(ClaimModel claim);
 
         Task<List<ClaimModel>> GetClaims();
         Task<ClaimModel> GetClaimById(int Id);
+        Task<List<ClaimModel>> GetClaimByCategory(string Category);
 
-        Task<bool> UserClaimAssign();
-        Task<bool> DeleteUserClaim();
-        Task<bool> RoleClaimAssign();
-        Task<bool> DeleteRoleClaim();
+        Task<ResponseModel> UserClaimAssign(UserClaimAssignModel userClaim);
+        Task<ResponseModel> DeleteUserClaim(UserClaimAssignModel userClaim);
+        Task<ResponseModel> RoleClaimAssign(RoleClaimAssignModel roleClaim);
+        Task<ResponseModel> DeleteRoleClaim(RoleClaimAssignModel roleClaim);
 
         Task<List<UserClaimModel>> GetUserAssignedClaims(string userId);
         Task<List<RoleClaimModel>> GetRoleAssignedClaims(string roleId);

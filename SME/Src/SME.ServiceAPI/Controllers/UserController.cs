@@ -49,14 +49,30 @@ namespace SME.ServiceAPI.Controllers
 
 
             var blUser = await _userManager.CreateRole(objInput.Name);
-            if (blUser)
+            if (blUser.Status)
                 return Ok(blUser);
             else
+                return BadRequest(blUser);
+        }
 
-                return BadRequest("User not created");
+        [HttpGet("roles")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetRoles()
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+            var objRoles = await _userManager.Roles();
+            if (objRoles != null)
+                return Ok(objRoles);
+
+            return NotFound("Roles not found");
         }
         #endregion
-        
+
         #region User
 
         [HttpGet("users")]
@@ -69,7 +85,11 @@ namespace SME.ServiceAPI.Controllers
             //if (!IsValidClaim)
             //    return Unauthorized("you don't have permission");
 
-            return Ok("you will get data soon");
+            var objUser = await _userManager.Users();
+            if (objUser != null)
+                return Ok(objUser);
+
+            return NotFound("User not exisit");
         }
 
         [HttpGet("users/{nameMail}")]
@@ -97,7 +117,7 @@ namespace SME.ServiceAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateUser([FromBody] UserModel objInput)
+        public async Task<IActionResult> CreateUser([FromBody] UserNewModel objInput)
         {
             //var IsValidClaim = HttpContext.ValidatePermission("2");
             //if (!IsValidClaim)
@@ -105,22 +125,20 @@ namespace SME.ServiceAPI.Controllers
 
 
             var blUser = await _userManager.CreateUser(objInput);
-            if (blUser)
+            if (blUser.Status)
                 return Ok(blUser);
             else
 
-            return BadRequest("User not created");
+            return BadRequest(blUser);
         }
-
-
-
-    
+               
+        
         [HttpPut("update")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateUser([FromBody] UserModel objInput)
+        public async Task<IActionResult> UpdateUser([FromBody] UserEditModel objInput)
         {
             //var IsValidClaim = HttpContext.ValidatePermission("2");
             //if (!IsValidClaim)
@@ -128,19 +146,128 @@ namespace SME.ServiceAPI.Controllers
 
 
             var blUser = await _userManager.UpdateUser(objInput);
-            if (blUser)
+            if (blUser.Status)
                 return Ok(blUser);
             else
 
-                return BadRequest("User not updated");
+                return BadRequest(blUser);
         }
 
+
+        [HttpPost("AssignRole")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AssignRole([FromBody] UserRoleAssignModel objInput)
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+
+            var blUser = await _userManager.UserRoleAssign(objInput);
+            if (blUser.Status)
+                return Ok(blUser);
+            else
+
+                return BadRequest(blUser);
+        }
 
         #endregion
 
         #region Claims
 
+        [HttpPost("NewClaim")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateClaim([FromBody] ClaimNewModel objInput)
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+
+            var blUser = await _userManager.CreateClaim(objInput);
+            if (blUser.Status)
+                return Ok(blUser);
+            else
+                return BadRequest(blUser);
+        }
+
+        [HttpPost("UpdateClaim")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateClaim([FromBody] ClaimModel objInput)
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+
+            var blUser = await _userManager.UpdateClaim(objInput);
+            if (blUser.Status)
+                return Ok(blUser);
+            else
+                return BadRequest(blUser);
+        }
+
+        [HttpGet("cliams")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetClaims()
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+            var objClaims = await _userManager.GetClaims();
+            if (objClaims != null)
+                return Ok(objClaims);
+
+            return NotFound("Claims not found");
+        }
+
+        [HttpGet("cliam/{Id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetClaimById(int Id)
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+            var objClaims = await _userManager.GetClaimById(Id);
+            if (objClaims != null)
+                return Ok(objClaims);
+
+            return NotFound("Claims not found");
+        }
+        [HttpGet("cliams/{Category}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetClaimsByCategory(string Category)
+        {
+            //var IsValidClaim = HttpContext.ValidatePermission("2");
+            //if (!IsValidClaim)
+            //    return Unauthorized("you don't have permission");
+
+            var objClaims = await _userManager.GetClaimByCategory(Category);
+            if (objClaims != null)
+                return Ok(objClaims);
+
+            return NotFound("Claims not found");
+        }
+
         #endregion
+
         #endregion
     }
 }
