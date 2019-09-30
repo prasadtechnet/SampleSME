@@ -8,6 +8,8 @@ using SME.ServiceAPI.Data.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,128 +56,328 @@ namespace SME.ServiceAPI.Business.Manager.User
         #region Role
         public async Task<ResponseModel> CreateRole(string roleName)
         {
-           var res= await _roleManager.CreateAsync(new AppRole { Name=roleName});
+            try
+            {
+                var res = await _roleManager.CreateAsync(new AppRole { Name = roleName });
 
-            //  await _unitofWork.SaveChangesAsync();
-            if (res.Succeeded)
-                return new ResponseModel {Status=true,Success="Role has created"};
-            else
-                return new ResponseModel { Status = false, Errors=res.Errors.Select(x=>x.Code+"-"+x.Description)}; 
+                //  await _unitofWork.SaveChangesAsync();
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "Role has created" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+          
 
         }
 
         public async Task<List<RoleModel>> Roles()
         {
-            var lsRoles = _roleManager.Roles.Select(x => _mapper.Map<RoleModel>(x)).ToList();
-            return lsRoles;
+            try
+            {
+                var lsRoles = _roleManager.Roles.Select(x => _mapper.Map<RoleModel>(x)).ToList();
+                return lsRoles;
+            }
+            catch (System.Exception ex)
+            {
+            }
+
+            return null;
         }
 
         public async Task<ResponseModel> RoleClaimAssign(RoleClaimAssignModel roleClaim)
         {
-            var role = await _roleManager.FindByIdAsync(roleClaim.RoleId);
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(roleClaim.RoleId);
+                if (role == null)
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = new[] { "Role not found" } };
 
-            var res= await _roleManager.AddClaimAsync(role,new System.Security.Claims.Claim(roleClaim.ClaimType,roleClaim.ClaimValue));
-            if (res.Succeeded)
-                return new ResponseModel { Status = true, Success = "Claim has assigned to role" };
-            else
-                return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+                var res = await _roleManager.AddClaimAsync(role, new System.Security.Claims.Claim(roleClaim.ClaimType, roleClaim.ClaimValue));
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "Claim has assigned to role" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:"+ex.Message } };
+            }
+          
+
         }
         public async Task<ResponseModel> DeleteRoleClaim(RoleClaimAssignModel roleClaim)
         {
-            throw new NotImplementedException();
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+          
         }
         public async Task<List<RoleClaimModel>> GetRoleAssignedClaims(string roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var role = await _roleManager.FindByIdAsync(roleId);
+                if (role == null)
+                    return null;
+
+                var res = await _roleManager.GetClaimsAsync(role);
+                if (res != null)
+                {
+                    return res.Select(x => new RoleClaimModel {ClaimType=x.Type,ClaimValue=x.Value,RoleId=roleId }).ToList();
+                }
+
+            }
+            catch (System.Exception)
+            {
+
+            }
+           
+
+            return null;
         }
         #endregion
 
         #region User
         public async Task<ResponseModel> CreateUser(UserNewModel appUser)
         {
-            var resp=  await _userManager.CreateAsync(new AppUser {UserName=appUser.UserName,Email=appUser.Email,PhoneNumber=appUser.Phone,LockoutEnabled=false,PhoneNumberConfirmed=true,TwoFactorEnabled=false },appUser.Password);
-            if (resp.Succeeded)
-                return new ResponseModel { Status = true, Success = "User has created" };
-            else
-                return new ResponseModel { Status = false, Errors = resp.Errors.Select(x => x.Code + "-" + x.Description) };
+            try
+            {
+                var resp = await _userManager.CreateAsync(new AppUser { UserName = appUser.UserName, Email = appUser.Email, PhoneNumber = appUser.Phone, LockoutEnabled = false, PhoneNumberConfirmed = true, TwoFactorEnabled = false }, appUser.Password);
+                if (resp.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "User has created" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = resp.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+          
         }
         public async Task<ResponseModel> UpdateUser(UserEditModel appUser)
         {
-            var appUserData = await _userManager.FindByIdAsync(appUser.Id);
-            if (appUserData != null)
+            try
             {
-                appUserData.UserName = appUser.UserName;
-                appUserData.PhoneNumber = appUser.Phone;
+                var appUserData = await _userManager.FindByIdAsync(appUser.Id);
+                if (appUserData != null)
+                {
+                    appUserData.UserName = appUser.UserName;
+                    appUserData.PhoneNumber = appUser.Phone;
 
-                var resp = await _userManager.UpdateAsync(appUserData);
-                if (resp.Succeeded)
-                    return new ResponseModel { Status = true, Success = "User has updated" };
-                else
-                    return new ResponseModel { Status = false, Errors = resp.Errors.Select(x => x.Code + "-" + x.Description) };
+                    var resp = await _userManager.UpdateAsync(appUserData);
+                    if (resp.Succeeded)
+                        return new ResponseModel { Status = HttpStatusCode.OK, Success = "User has updated" };
+                    else
+                        return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = resp.Errors.Select(x => x.Code + "-" + x.Description) };
+                }
+                // await _unitofWork.SaveChangesAsync();
+                return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = new[] { "Got error while updating" } };
             }
-            // await _unitofWork.SaveChangesAsync();
-            return new ResponseModel { Status = false, Errors = new[] { "Got error while updating"} };
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+          
         }
      
         public async Task<UserModel> GetUserById(string userId)
         {
-          var appUser= await _userManager.FindByIdAsync(userId);
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userId);
 
-          return _mapper.Map<UserModel>(appUser);
+                return _mapper.Map<UserModel>(appUser);
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+            return null;
         }
         public async Task<UserModel> GetUserByIdOrEmailorUserNameOrMobile(string user_name_email)
         {
-            AppUser appUser = null;
-            appUser = await _userManager.FindByIdAsync(user_name_email);
+            try
+            {
+                AppUser appUser = null;
+                appUser = await _userManager.FindByIdAsync(user_name_email);
 
-            if(appUser==null)
-             appUser = await _userManager.FindByNameAsync(user_name_email);
+                if (appUser == null)
+                    appUser = await _userManager.FindByNameAsync(user_name_email);
 
-            if (appUser == null)
-                appUser = await _userManager.FindByEmailAsync(user_name_email);
+                if (appUser == null)
+                    appUser = await _userManager.FindByEmailAsync(user_name_email);
 
-            return _mapper.Map<UserModel>(appUser);
+                return _mapper.Map<UserModel>(appUser);
+            }
+            catch (System.Exception ex)
+            {   
+            }
+            return null;
         }
         public async Task<List<UserModel>> Users()
         {
-            var lsUser = _userManager.Users.Select(x => _mapper.Map<UserModel>(x)).ToList();
+            try
+            {
+                var lsUser = _userManager.Users.Select(x => _mapper.Map<UserModel>(x)).ToList();
 
-            return lsUser;
+                return lsUser;
+            }
+            catch (System.Exception ex)
+            {
+            }
+            return null;
         }
 
         public async Task<ResponseModel> UserRoleAssign(UserRoleAssignModel userRole)
         {
-            var appUser = await _userManager.FindByIdAsync(userRole.UserId);
-           var res= await _userManager.AddToRoleAsync(appUser, userRole.RoleName);
-            if (res.Succeeded)
-                return new ResponseModel { Status = true, Success = "Role has assigned to user" };
-            else
-                return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
-
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userRole.UserId);
+                var res = await _userManager.AddToRoleAsync(appUser, userRole.RoleName);
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "Role has assigned to user" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
         public async Task<ResponseModel> UserClaimAssign(UserClaimAssignModel userClaim)
         {
-            throw new NotImplementedException();
-        }       
-        
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userClaim.UserId);
+                var res = await _userManager.AddClaimAsync(appUser, new System.Security.Claims.Claim(userClaim.ClaimType, userClaim.ClaimValue));
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "claim has assigned to user" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+        }
+        public async Task<ResponseModel> UserClaimListAssign(UserClaimsAssignModel userClaim)
+        {
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userClaim.UserId);
+
+                var res = await _userManager.AddClaimsAsync(appUser, userClaim.Claims.Select(x=> new System.Security.Claims.Claim(x.ClaimType, x.ClaimValue)));
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "claim has assigned to user" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+        }
+
         public async Task<ResponseModel> DeleteUserClaim(UserClaimAssignModel userClaim)
         {
+            try
+            {
+
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
             throw new NotImplementedException();
         }
         public async Task<List<UserClaimModel>> GetUserAssignedClaims(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userId);
+
+               var lsClaims=await _userManager.GetClaimsAsync(appUser);
+                return lsClaims.Select(x => new UserClaimModel {UserId=userId,ClaimType=x.Type,ClaimValue=x.Value }).ToList();
+            }
+            catch (System.Exception ex)
+            {
+            }
+            return null;
         }
 
         public async Task<List<UserClaimModel>> GetUserPermittedClaims(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var appUser = await _userManager.FindByIdAsync(userId);
+
+                var lsUserClaims = new List<Claim>();
+                var lsRoleClaims = new List<Claim>();
+                //Get Roles & RoleClaims
+                var userRoles = (await _userManager.GetRolesAsync(appUser));
+                if (userRoles != null)
+                {
+                    foreach (var roleName in userRoles)
+                    {
+                        var role = await _roleManager.FindByIdAsync(roleName);
+                        var lsRClaim = await _roleManager.GetClaimsAsync(role);
+
+                        lsRoleClaims.AddRange(lsRClaim);
+                    }
+
+                }
+
+                //GetUser Claims
+                lsUserClaims = (await _userManager.GetClaimsAsync(appUser)).ToList();
+
+
+                //common claims
+
+               
+            }
+            catch (System.Exception ex)
+            {
+            }
+            return null;
         }
 
         public async Task<List<int>> GetUserPermittedClaimsWithMapping(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var lsClaimIds = new List<int>();
+                var appUser = await _userManager.FindByIdAsync(userId);
+
+               var lsUserClaims = (await _userManager.GetClaimsAsync(appUser)).ToList();
+
+               var lsClaimMaster = (await _repository.All<ClaimMaster>()).ToList();
+                foreach (var uc in lsUserClaims)
+                {
+                   var cm= lsClaimMaster.Find(x => x.Category == uc.Type && x.ClaimValue == uc.Value);
+                    if (cm != null)
+                    {
+                        lsClaimIds.Add(cm.Id);
+                    }
+                }
+
+                return lsClaimIds;
+
+            }
+            catch (System.Exception ex)
+            {
+            }
+
+            return null;
         }
 
         #endregion
@@ -183,23 +385,40 @@ namespace SME.ServiceAPI.Business.Manager.User
         #region  CliamMaster
         public async Task<ResponseModel> CreateClaim(ClaimNewModel claim)
         {
-            await _repository.Create<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(_mapper.Map<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(claim));
+            try
+            {
+                await _repository.Create<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(_mapper.Map<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(claim));
 
-           await _unitofWork.SaveChangesAsync();
-          //if(res>0)
-            return new ResponseModel { Status = true, Success = "Claim has created" };
-            //else
-            //    return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+                await _unitofWork.SaveChangesAsync();
+                //if(res>0)
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "Claim has created" };
+                //else
+                //    return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+          
         }
         public async Task<ResponseModel> UpdateClaim(ClaimModel claim)
         {
+            try
+            {
+
+          
             await _repository.Update<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(_mapper.Map<SME.ServiceAPI.Common.Idenitity.ClaimMaster>(claim));
 
             await _unitofWork.SaveChangesAsync();
 
-            return new ResponseModel { Status = true, Success = "Claim has updated" };
-            //else
-            //    return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
+            return new ResponseModel { Status = HttpStatusCode.OK, Success = "Claim has updated" };
+                //else
+                //    return new ResponseModel { Status = false, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) }; 
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
         public async Task<ClaimModel> GetClaimById(int Id)

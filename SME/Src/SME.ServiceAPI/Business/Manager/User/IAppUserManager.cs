@@ -44,6 +44,7 @@ namespace SME.ServiceAPI.Business.Manager.User
         Task<List<ClaimModel>> GetClaimByCategory(string Category);
 
         Task<ResponseModel> UserClaimAssign(UserClaimAssignModel userClaim);
+        Task<ResponseModel> UserClaimListAssign(UserClaimsAssignModel userClaim);
         Task<ResponseModel> DeleteUserClaim(UserClaimAssignModel userClaim);
         Task<ResponseModel> RoleClaimAssign(RoleClaimAssignModel roleClaim);
         Task<ResponseModel> DeleteRoleClaim(RoleClaimAssignModel roleClaim);
@@ -51,7 +52,6 @@ namespace SME.ServiceAPI.Business.Manager.User
         Task<List<UserClaimModel>> GetUserAssignedClaims(string userId);
         Task<List<RoleClaimModel>> GetRoleAssignedClaims(string roleId);
 
-        Task<List<UserClaimModel>> GetUserPermittedClaims(string userId);
         Task<List<int>> GetUserPermittedClaimsWithMapping(string userId);
 
        // Task SaveChangesAsync();

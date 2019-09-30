@@ -16,6 +16,7 @@ namespace SME.ServiceAPI.Controllers
         private IAuthManager _authManager;
         public AuthController(IAuthManager authManager)
         {
+          
             _authManager = authManager;
         }
         //[HttpPost("login")]

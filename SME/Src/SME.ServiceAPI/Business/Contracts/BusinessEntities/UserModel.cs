@@ -41,6 +41,16 @@ namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
         public string ClaimValue { get; set; }
     }
 
-    
+    public class UserClaimsAssignModel
+    {
+        public string UserId { get; set; }
+
+        public List<ClaimModel> Claims { get; set; }
+        public class ClaimModel
+        {
+            public string ClaimType { get; set; }
+            public string ClaimValue { get; set; }
+        }
+    }
 
 }
