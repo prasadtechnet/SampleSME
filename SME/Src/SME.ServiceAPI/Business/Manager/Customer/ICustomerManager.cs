@@ -1,4 +1,5 @@
 ﻿using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Business.Contracts.Response;
 using SME.ServiceAPI.Business.Manager.Core;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,16 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         //2.7  Customer login
         //2.8  Customer Password Reset
 
-        Task<bool> CreateCustomer(CustomerModel objInput);
-        Task<bool> UpdateCustomer(CustomerModel objInput);
-        Task<bool> DeleteCustomer(string Id);
+        Task<ResponseModel> CreateCustomer(CustomerModel objInput);
+        Task<ResponseModel> UpdateCustomer(CustomerModel objInput);
+        Task<ResponseModel> DeleteCustomer(string Id);
         Task<CustomerModel> CustomerById(string Id);
         Task<CustomerModel> CustomerByName(string Name);
         Task<List<CustomerModel>> Customers();
+
+        Task<ResponseModel> AddCustomerProduct(CustomerProductModel objInput);
+        Task<ResponseModel> DeleteCustomerProduct(CustomerProductModel objInput);
+
 
         Task<CustomerAuthResponseModel> Authenticate(CustomerAuthRequestModel objInput);
 

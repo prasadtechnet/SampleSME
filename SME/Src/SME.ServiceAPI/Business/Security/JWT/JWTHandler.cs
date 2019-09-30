@@ -17,9 +17,11 @@ namespace JwtRsaAPI.JWT
 {
     public interface IJWTHandler
     {
-        JWTTokenModel Create(string userId);
+      //  JWTTokenModel Create(string userId);
         TokenValidationParameters Parameters { get; }
         Task<JwtResponse> GenerateToken1(string user);
+
+        Task<JwtResponse> GenerateCustomerToken(List<int> lsClaims, string role = "", string userId = "", string Email = "");
     }
     public class JWTHandler : IJWTHandler
     {
@@ -124,23 +126,28 @@ namespace JwtRsaAPI.JWT
                 Token = jwtTokenHndlr.WriteToken(token)
             };
         }
-        public async Task<JwtResponse> GenerateToken(IdentityUser user)
+
+        public async Task<JwtResponse> GenerateCustomerToken(List<int> lsClaimIds, string role = "", string userId = "", string email = "")
         {
             var jwtTokenHndlr = new JwtSecurityTokenHandler();
 
             var secretKey = System.Text.Encoding.ASCII.GetBytes(_settings.Secret);
             //Default Claims
-            var lsClaims = new List<Claim>{
-                                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
-                                    };
+            var lsClaims = new List<Claim>();
 
-            
+            if (!String.IsNullOrEmpty(userId))
+                lsClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, userId));
+            if (!String.IsNullOrEmpty(email))
+                lsClaims.Add(new Claim(JwtRegisteredClaimNames.Email, email));
+            if (!String.IsNullOrEmpty(role))
+                lsClaims.Add(new Claim("role", role));
 
+
+
+            var lsPermissions = string.Join(",", lsClaims);
             //Permission Cliams need to add
-            //if (String.IsNullOrEmpty(lsPermissions))
-            //    lsClaims.Add(new Claim(type: "permission", value: lsPermissions));
+            if (!String.IsNullOrEmpty(lsPermissions))
+                lsClaims.Add(new Claim(type: "permission", value: lsPermissions));
 
             var tokenDesc = new SecurityTokenDescriptor
             {
@@ -158,34 +165,70 @@ namespace JwtRsaAPI.JWT
             };
         }
 
+        //public async Task<JwtResponse> GenerateToken(IdentityUser user)
+        //{
+        //    var jwtTokenHndlr = new JwtSecurityTokenHandler();
 
-        public JWTTokenModel Create(string userId)
-        {
-            var nowUtc = DateTime.UtcNow;
-            var expires = nowUtc.AddDays(_settings.expiryDays);
-            var centuryBegin = new DateTime(1970, 1, 1);
-            var exp = (long)(new TimeSpan(expires.Ticks - centuryBegin.Ticks).TotalSeconds);
-            var now = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
-            var issuer = _settings.issuer ?? string.Empty;
-            var payload = new JwtPayload
-            {
-                {"sub",userId },
-                {"unique_name",userId },
-                {"iss",issuer },
-                {"iat",now },
-                { "nbf",now },
-                { "exp",exp},
-                { "jti",Guid.NewGuid().ToString("N")}
-            };
+        //    var secretKey = System.Text.Encoding.ASCII.GetBytes(_settings.Secret);
+        //    //Default Claims
+        //    var lsClaims = new List<Claim>{
+        //                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        //                            new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+        //                            new Claim(JwtRegisteredClaimNames.Email, user.Email)
+        //                            };
 
-            var jwt = new JwtSecurityToken(_jwtHeader, payload);
-            var token = _jwtSecurityTokenHandler.WriteToken(jwt);
 
-            return new JWTTokenModel
-            {
-                Token=token,
-                Expires=exp
-            };
-        }
+
+        //    //Permission Cliams need to add
+        //    //if (String.IsNullOrEmpty(lsPermissions))
+        //    //    lsClaims.Add(new Claim(type: "permission", value: lsPermissions));
+
+        //    var tokenDesc = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new System.Security.Claims.ClaimsIdentity(lsClaims.ToArray()),
+        //        Expires = DateTime.UtcNow.Add(_settings.TokenLifetime),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)
+        //    };
+
+        //    var token = jwtTokenHndlr.CreateToken(tokenDesc);
+
+        //    return new JwtResponse
+        //    {
+        //        Success = true,
+        //        Token = jwtTokenHndlr.WriteToken(token)
+        //    };
+        //}
+
+
+        //public JWTTokenModel Create(string userId)
+        //{
+        //    var nowUtc = DateTime.UtcNow;
+        //    var expires = nowUtc.AddDays(_settings.expiryDays);
+        //    var centuryBegin = new DateTime(1970, 1, 1);
+        //    var exp = (long)(new TimeSpan(expires.Ticks - centuryBegin.Ticks).TotalSeconds);
+        //    var now = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
+        //    var issuer = _settings.issuer ?? string.Empty;
+        //    var payload = new JwtPayload
+        //    {
+        //        {"sub",userId },
+        //        {"unique_name",userId },
+        //        {"iss",issuer },
+        //        {"iat",now },
+        //        { "nbf",now },
+        //        { "exp",exp},
+        //        { "jti",Guid.NewGuid().ToString("N")}
+        //    };
+
+        //    var jwt = new JwtSecurityToken(_jwtHeader, payload);
+        //    var token = _jwtSecurityTokenHandler.WriteToken(jwt);
+
+        //    return new JWTTokenModel
+        //    {
+        //        Token=token,
+        //        Expires=exp
+        //    };
+        //}
+
+
     }
 }

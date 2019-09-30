@@ -9,6 +9,10 @@ using SME.ServiceAPI.Business.Manager.ServiceCall;
 using SME.ServiceAPI.Data.Interface;
 using SME.ServiceAPI.Common.Entities;
 using AutoMapper;
+using SME.ServiceAPI.Business.Manager.User;
+using JwtRsaAPI.JWT;
+using SME.ServiceAPI.Business.Contracts.Response;
+using System.Net;
 
 namespace SME.ServiceAPI.Business.Manager.Customer
 {
@@ -19,17 +23,21 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         private readonly IUnitOfWork _unitofWork;
         private ILogger<CustomerManager> _logger;
         private IServiceCallManager _serviceCallManager;
+        private IAppUserManager _appUserManager;
         private IMapper _mapper;
+        private IJWTHandler _jwtManager;
         #endregion
 
         #region Constructor
-        public CustomerManager( IServiceCallManager serviceCallManager, IRepository repository,IUnitOfWork unitofWork,IMapper mapper,ILogger<CustomerManager> logger)
+        public CustomerManager( IServiceCallManager serviceCallManager,IAppUserManager appUserManager, IJWTHandler jwtManager, IRepository repository,IUnitOfWork unitofWork,IMapper mapper,ILogger<CustomerManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
             _logger = logger;
             _serviceCallManager = serviceCallManager;
             _mapper = mapper;
+            _appUserManager = appUserManager;
+            _jwtManager = jwtManager;
         }
 
 
@@ -38,22 +46,27 @@ namespace SME.ServiceAPI.Business.Manager.Customer
 
         #region Customer
        
-        public async Task<bool> UpdateCustomer(CustomerModel objInput)
+        public async Task<ResponseModel> UpdateCustomer(CustomerModel objInput)
         {
             await _repository.Update<SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
 
             await _unitofWork.SaveChangesAsync();
 
-            return true;
+            return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer updated successfully" };
         }
 
-        public async Task<bool> CreateCustomer(CustomerModel objInput)
+        public async Task<ResponseModel> CreateCustomer(CustomerModel objInput)
         {
             await _repository.Create< SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
 
             await _unitofWork.SaveChangesAsync();
 
-            return true;
+            //Get Customer Role Claims
+            //Future--- PriporityCustomer,NormalCutomer
+
+            //assgin default claim
+
+              return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer has been created" };
         }
 
         public async Task<CustomerModel> CustomerById(string Id)
@@ -89,20 +102,74 @@ namespace SME.ServiceAPI.Business.Manager.Customer
             return null;
         }
 
-        public async Task<bool> DeleteCustomer(string Id)
+        public async Task<ResponseModel> DeleteCustomer(string Id)
         {
             throw new NotImplementedException();
         }
 
         public async Task<CustomerAuthResponseModel> Authenticate(CustomerAuthRequestModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+               var cust= await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x => x.LogonName == objInput.User || x.Mobile == objInput.User || x.Email == objInput.User);
+               if (cust == null)
+                   return new CustomerAuthResponseModel { Status=false,Error="Invalid user" };
+
+              if(cust.Password!=objInput.Password)
+                    return new CustomerAuthResponseModel { Status = false, Error = "Invalid password" };
+
+
+                var lsRoleClaims=await _appUserManager.GetCustomerClaims();
+                if (lsRoleClaims != null)
+                {
+                    //Create JwtToken
+                    var jwtResp = await _jwtManager.GenerateCustomerToken(lsRoleClaims, "Customer", cust.Id, cust.Email);
+
+                    return new CustomerAuthResponseModel { Status = true, Token = jwtResp.Token };
+                }
+               
+
+            }
+            catch (System.Exception ex)
+            {
+                return new CustomerAuthResponseModel { Status = false,Error="Exception:"+ex.Message};
+            }
+
+
+            return null;
         }
 
         public async Task<CustomerResetResponseModel> ResetPassword(CustomerResetRequestModel objInput)
         {
             throw new NotImplementedException();
         }
+
+    
+
+        public async Task<ResponseModel> AddCustomerProduct(CustomerProductModel objInput)
+        {
+            try
+            {
+               await _repository.Create<CustomerProduct>(_mapper.Map<CustomerProduct>(objInput));
+
+               await _unitofWork.SaveChangesAsync();
+
+               return new ResponseModel { Status = HttpStatusCode.OK,Success="Product added successfully" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+
+            
+        }
+
+        public async Task<ResponseModel> DeleteCustomerProduct(CustomerProductModel objInput)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
 
         #region SaveChanges commit

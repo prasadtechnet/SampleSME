@@ -113,7 +113,13 @@ namespace SME.ServiceAPI.Business.Manager.User
         {
             try
             {
-                throw new NotImplementedException();
+                var appRole = await _roleManager.FindByIdAsync(roleClaim.RoleId);
+
+                var res=await _roleManager.RemoveClaimAsync(appRole, new Claim(roleClaim.ClaimType, roleClaim.ClaimValue));
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "Claim has been delete" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
             }
             catch (System.Exception ex)
             {
@@ -292,7 +298,13 @@ namespace SME.ServiceAPI.Business.Manager.User
         {
             try
             {
+                var appUser = await _userManager.FindByIdAsync(userClaim.UserId);
 
+                var res = await _userManager.RemoveClaimAsync(appUser, new Claim(userClaim.ClaimType, userClaim.ClaimValue));
+                if (res.Succeeded)
+                    return new ResponseModel { Status = HttpStatusCode.OK, Success = "Claim has been delete" };
+                else
+                    return new ResponseModel { Status = HttpStatusCode.BadRequest, Errors = res.Errors.Select(x => x.Code + "-" + x.Description) };
             }
             catch (System.Exception ex)
             {
@@ -455,7 +467,42 @@ namespace SME.ServiceAPI.Business.Manager.User
 
             return null;
         }
-            
+
+        public async Task<List<int>> GetCustomerClaims()
+        {
+            try
+            {
+                //Get Role
+                var roleCust = await _roleManager.FindByNameAsync("Customer");
+
+                var lsClaimIds = new List<int>();
+               
+
+                var lsUserClaims = (await _roleManager.GetClaimsAsync(roleCust)).ToList();
+
+                var lsClaimMaster = (await _repository.All<ClaimMaster>()).ToList();
+                foreach (var uc in lsUserClaims)
+                {
+                    var cm = lsClaimMaster.Find(x => x.Category == uc.Type && x.ClaimValue == uc.Value);
+                    if (cm != null)
+                    {
+                        lsClaimIds.Add(cm.Id);
+                    }
+                }
+
+                return lsClaimIds;
+
+                //GetClaims
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region SaveChanges commit
