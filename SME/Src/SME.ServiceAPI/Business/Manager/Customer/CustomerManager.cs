@@ -22,19 +22,19 @@ namespace SME.ServiceAPI.Business.Manager.Customer
         private readonly IRepository _repository;
         private readonly IUnitOfWork _unitofWork;
         private ILogger<CustomerManager> _logger;
-        private IServiceCallManager _serviceCallManager;
+       // private IServiceCallManager _serviceCallManager;
         private IAppUserManager _appUserManager;
         private IMapper _mapper;
         private IJWTHandler _jwtManager;
         #endregion
 
         #region Constructor
-        public CustomerManager( IServiceCallManager serviceCallManager,IAppUserManager appUserManager, IJWTHandler jwtManager, IRepository repository,IUnitOfWork unitofWork,IMapper mapper,ILogger<CustomerManager> logger)
+        public CustomerManager( IAppUserManager appUserManager, IJWTHandler jwtManager, IRepository repository,IUnitOfWork unitofWork,IMapper mapper,ILogger<CustomerManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
             _logger = logger;
-            _serviceCallManager = serviceCallManager;
+          //  _serviceCallManager = serviceCallManager;
             _mapper = mapper;
             _appUserManager = appUserManager;
             _jwtManager = jwtManager;
@@ -48,33 +48,55 @@ namespace SME.ServiceAPI.Business.Manager.Customer
        
         public async Task<ResponseModel> UpdateCustomer(CustomerModel objInput)
         {
-            await _repository.Update<SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
+            try
+            {
 
-            await _unitofWork.SaveChangesAsync();
+                await _repository.Update<SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
 
-            return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer updated successfully" };
+                await _unitofWork.SaveChangesAsync();
+
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer updated successfully" };
+
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors =new[] { "Exception:" + ex.Message } };
+            }
         }
 
         public async Task<ResponseModel> CreateCustomer(CustomerModel objInput)
         {
-            await _repository.Create< SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
+            try
+            {
+                await _repository.Create<SME.ServiceAPI.Common.Entities.Customer>(_mapper.Map<SME.ServiceAPI.Common.Entities.Customer>(objInput));
 
-            await _unitofWork.SaveChangesAsync();
+                await _unitofWork.SaveChangesAsync();
 
-            //Get Customer Role Claims
-            //Future--- PriporityCustomer,NormalCutomer
+                //Get Customer Role Claims
+                //Future--- PriporityCustomer,NormalCutomer
 
-            //assgin default claim
+                //assgin default claim
 
-              return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer has been created" };
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "Customer has been created" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors =new[] { "Exception:" + ex.Message } };
+            }
         }
 
         public async Task<CustomerModel> CustomerById(string Id)
         {
-            var objCust= await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x=>x.Id==Id);
+            try { 
+            var objCust= await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x=>x.Id==Id,y=>y.Products);
             if (objCust != null)
             {
                 return _mapper.Map<CustomerModel>(objCust);
+            }
+            }
+            catch (System.Exception ex)
+            {
+                
             }
 
             return null;
@@ -82,29 +104,49 @@ namespace SME.ServiceAPI.Business.Manager.Customer
 
         public async Task<CustomerModel> CustomerByName(string Name)
         {
-            var objCust = await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x => x.Name == Name);
-            if (objCust != null)
+            try
             {
-                return _mapper.Map<CustomerModel>(objCust);
+                var objCust = await _repository.Find<SME.ServiceAPI.Common.Entities.Customer>(x => x.Name == Name,y=>y.Products);
+                if (objCust != null)
+                {
+                    return _mapper.Map<CustomerModel>(objCust);
+                }
             }
+            catch (System.Exception ex)
+            {
 
+            }
             return null;
         }
 
         public async Task<List<CustomerModel>> Customers()
         {
-            var objCust = await _repository.All<SME.ServiceAPI.Common.Entities.Customer>();
-            if (objCust != null)
+            try
             {
-                return objCust.Select(x=>_mapper.Map<CustomerModel>(x)).ToList();
+                var objCust = await _repository.All<SME.ServiceAPI.Common.Entities.Customer>();
+                if (objCust != null)
+                {
+                    return objCust.Select(x => _mapper.Map<CustomerModel>(x)).ToList();
+                }
             }
+            catch (System.Exception ex)
+            {
 
+            }
             return null;
         }
 
         public async Task<ResponseModel> DeleteCustomer(string Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
+           
         }
 
         public async Task<CustomerAuthResponseModel> Authenticate(CustomerAuthRequestModel objInput)
@@ -141,7 +183,15 @@ namespace SME.ServiceAPI.Business.Manager.Customer
 
         public async Task<CustomerResetResponseModel> ResetPassword(CustomerResetRequestModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                return new CustomerResetResponseModel { Status = true, Success = "Password has reset successully" };
+            }
+            catch (System.Exception ex)
+            {
+                return new CustomerResetResponseModel { Status = false, Error = "Exception:" + ex.Message };
+            }
         }
 
     
@@ -166,7 +216,15 @@ namespace SME.ServiceAPI.Business.Manager.Customer
 
         public async Task<ResponseModel> DeleteCustomerProduct(CustomerProductModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
 

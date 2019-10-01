@@ -27,7 +27,7 @@ namespace SME.ServiceAPI.Business.Contracts.BusinessEntities
     public class CustomerResetResponseModel
     {
         public bool Status { get; set; }
-        public string Token { get; set; }
+        public string Success { get; set; }
         public string Error { get; set; }
     }
 }

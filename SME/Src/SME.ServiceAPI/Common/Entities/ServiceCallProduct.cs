@@ -10,7 +10,8 @@ namespace SME.ServiceAPI.Common.Entities
     {
         public int Id { get; set; }
         public string ServiceCallId { get; set; }
-        public string ProductId { get; set; }     
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
         public bool IsUnderWarrenty { get; set; }
         public int Quantity { get; set; }
         public decimal? UnitPrice { get; set; }

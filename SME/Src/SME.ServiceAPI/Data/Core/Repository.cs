@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using SME.ServiceAPI.Data.Context;
 using SME.ServiceAPI.Data.Interface;
@@ -43,6 +44,13 @@ namespace SME.ServiceAPI.Data.Core
             total = _resetSet.Count();
             return _resetSet.AsQueryable();
         }
+        public virtual async Task<IQueryable<T>> Filter<T>(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes) where T : class
+        {
+            var query = _context.Set<T>().Where<T>(filter);
+
+           return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        }
+
 
         public virtual async Task Create<T>(T TObject) where T : class
         {
@@ -87,6 +95,12 @@ namespace SME.ServiceAPI.Data.Core
         {
             return _context.Set<T>().FirstOrDefault<T>(predicate);
         }
+
+        public virtual async Task<T> Find<T>(Expression<Func<T, bool>> predicate,params Expression<Func<T,object>>[] includes) where T : class
+        {
+            return  includes.Aggregate(_context.Set<T>().Where(predicate),(current,inc)=>current.Include(inc)).FirstOrDefault<T>();
+        }
+
         public virtual async Task ExecuteProcedure(String procedureCommand, params object[] sqlParams)
         {
             _context.Database.ExecuteSqlCommand(procedureCommand, sqlParams);
@@ -111,5 +125,47 @@ namespace SME.ServiceAPI.Data.Core
             }
             return Task.FromResult<string>(keyValue.ToString());
         }
+
+
+        //Generic way to include childs
+        public TResult GetFirstOrDefault<TResult, TEntity>(Expression<Func<TEntity, TResult>> selector,
+                                          Expression<Func<TEntity, bool>> predicate = null,
+                                          Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                          Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+                                          bool disableTracking = true) where TEntity:class
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).Select(selector).FirstOrDefault();
+            }
+            else
+            {
+                return query.Select(selector).FirstOrDefault();
+            }
+        }
+
+    //    var affiliate = await affiliateRepository.GetFirstOrDefaultAsync(
+    //predicate: b => b.Id == id,
+    //include: source => source
+    //    .Include(a => a.Branches)
+    //    .ThenInclude(a => a.Emails)
+    //    .Include(a => a.Branches)
+    //    .ThenInclude(a => a.Phones));
     }
 }

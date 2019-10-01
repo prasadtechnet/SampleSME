@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,9 @@ using SME.ServiceAPI.Business.BusinessFlow;
 using SME.ServiceAPI.Business.BusinessFlow.Core;
 using SME.ServiceAPI.Business.Contracts;
 using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Business.Contracts.Response;
+using SME.ServiceAPI.Business.Manager.Customer;
+using SME.ServiceAPI.Business.Manager.User;
 using SME.ServiceAPI.Data.Interface;
 
 namespace SME.ServiceAPI.Business.Manager.ServiceCall
@@ -20,52 +24,114 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         private ILogger<ServiceCallManager> _logger;
         // private IWorkFlowManager _scFlowManager;
         private IMapper _mapper;
+        private IAppUserManager _appUserManager;
+        private ICustomerManager _customerManager;
         #endregion
 
         #region Constructor
-        public ServiceCallManager(IRepository repository, IUnitOfWork unitofWork, IMapper mapper, ILogger<ServiceCallManager> logger)
+        public ServiceCallManager(IAppUserManager appUserManager, ICustomerManager customerManager,IRepository repository, IUnitOfWork unitofWork, IMapper mapper, ILogger<ServiceCallManager> logger)
         {
             _repository = repository;
             _unitofWork = unitofWork;
             _logger = logger;
             _mapper = mapper;
+            _appUserManager = appUserManager;
+            _customerManager = customerManager;
         }
 
 
         #endregion
 
         #region ServiceCall
-        public async Task<bool> CreateServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> CreateServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var scObj = _mapper.Map<SME.ServiceAPI.Common.Entities.ServiceCall>(objInput);
+
+                await _repository.Create<SME.ServiceAPI.Common.Entities.ServiceCall>(scObj);
+
+                await _unitofWork.SaveChangesAsync();
+
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
-        public async Task<bool> AssignServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> AssignServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                
+
+
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
-        public async Task<bool> NotAcceptedServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> NotAcceptedServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
-        public async Task<bool> NotResolveServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> NotResolveServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
-        public async Task<bool> ResolvedServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> ResolvedServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
-        public async Task<bool> AcceptServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> AcceptServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
 
-        public async Task<bool> CloseServiceCall(ServiceCallModel objInput)
+        public async Task<ResponseModel> CloseServiceCall(ServiceCallModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
         public async Task<ServiceCallModel> GetServiceCallDetails(string Id)
         {
@@ -74,9 +140,16 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
         #endregion
 
         #region Feedback
-        public async Task<bool> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput)
+        public async Task<ResponseModel> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return new ResponseModel { Status = HttpStatusCode.OK, Success = "" };
+            }
+            catch (System.Exception ex)
+            {
+                return new ResponseModel { Status = HttpStatusCode.InternalServerError, Errors = new[] { "Exception:" + ex.Message } };
+            }
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using SME.ServiceAPI.Business.Contracts.BusinessEntities;
+using SME.ServiceAPI.Business.Contracts.Response;
 using SME.ServiceAPI.Business.Manager.Core;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,15 @@ namespace SME.ServiceAPI.Business.Manager.ServiceCall
 	//5.7 ResolvedCall
 	//5.8 ClosedCall
 
-        Task<bool> CreateServiceCall(ServiceCallModel objInput);
-        Task<bool> AssignServiceCall(ServiceCallModel objInput);
-        Task<bool> AcceptServiceCall(ServiceCallModel objInput);
-        Task<bool> NotAcceptedServiceCall(ServiceCallModel objInput);
-        Task<bool> ResolvedServiceCall(ServiceCallModel objInput);
-        Task<bool> NotResolveServiceCall(ServiceCallModel objInput);
-        Task<bool> CloseServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> CreateServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> AssignServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> AcceptServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> NotAcceptedServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> ResolvedServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> NotResolveServiceCall(ServiceCallModel objInput);
+        Task<ResponseModel> CloseServiceCall(ServiceCallModel objInput);
         Task<List<ServiceCallHistoryModel>> TrackServiceCall(string Id);
-        Task<bool> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput);
+        Task<ResponseModel> CreateServiceCallFeedback(ServiceCallFeedbackModel objInput);
         Task<ServiceCallModel> GetServiceCallDetails(string Id);
 
       //  Task SaveChangesAsync();
